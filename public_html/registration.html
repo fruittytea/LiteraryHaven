@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Images/Logo/icon.png" type="image/png">
+<body class="autorisation-body">
+    <header class="mini-header">
+        <div class="logo">
+            <img src="Images/Logo/logo.png" alt="Logo">
+        </div>
+    </header>
+    <main>
+    <div class="autorisation-form">
+        <form action="reg.php" method="get">
+            <h1>Регистрация</h1>
+            <table>
+                <tr>
+                    <td>
+                        <label for="SurnameInput">Фамилия</label><br>
+                        <input type="text" name="SurnameInput" id="SurnameInput" required placeholder="Иванов" tabindex = 1><br>
+                    </td>
+                    <td>
+                        <label for="PhoneInput">Телефон</label><br>
+                        <input type="text" name="PhoneInput" id="PhoneInput" required placeholder="+7 (900) 900 90 90" tabindex = 5><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="NameInput">Имя</label><br>
+                        <input type="text" name="NameInput" id="NameInput" required placeholder="Иван" tabindex = 2><br>
+                    </td>
+                    <td>
+                        <label for="EmailInput">Email</label><br>
+                        <input type="email" name="EmailInput" id="EmailInput" required placeholder="email@email.com" tabindex = 6><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="FathernameInput">Отчество</label><br>
+                        <input type="text" name="FathernameInput" id="FathernameInput" placeholder="Иванович" tabindex = 3><br>
+                    </td>
+                    <td>
+                        <label for="PasswordInput">Пароль</label><br>
+                        <input type="password" name="PasswordInput" id="PasswordInput" required tabindex = 7><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="NicknameInput">Имя пользователя</label><br>
+                        <input type="text" name="NicknameInput" id="NicknameInput" required placeholder="user" tabindex = 4><br>
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" name="" id="autorisation-button" value="Зарегистрироваться" tabindex = 8>
+            <br>
+            <a href="autorisation.php">Есть аккаунт? Авторизуйтесь!</a>
+        </form>
+    </div>
+    </main>
+    <!--JS код для маски ввода-->
+    <script>
+    // Добавляем обработчик события, который срабатывает, когда весь HTML загружен и обработан
+        window.addEventListener("DOMContentLoaded", function() {
+            [].forEach.call( document.querySelectorAll('#PhoneInput'), function(input) {
+                var keyCode;
+                // Функция mask(event) для форматирования ввода телефонного номера
+                function mask(event) {
+                    event.keyCode && (keyCode = event.keyCode);
+                    var pos = this.selectionStart;
+                    if (pos < 3) event.preventDefault();
+                    var matrix = "+7 (___) ___ __ __",
+                        i = 0,
+                        def = matrix.replace(/\D/g, ""),
+                        val = this.value.replace(/\D/g, ""),
+                        new_value = matrix.replace(/[_\d]/g, function(a) {
+                            return i < val.length ? val.charAt(i++) : a
+                        });
+                    i = new_value.indexOf("_");
+                    if (i != -1) {
+                        i < 5 && (i = 3);
+                        new_value = new_value.slice(0, i)
+                    }
+                    var reg = matrix.substr(0, this.value.length).replace(/_+/g,
+                        function(a) {
+                            return "\\d{1," + a.length + "}"
+                        }).replace(/[+()]/g, "\\$&");
+                    reg = new RegExp("^" + reg + "$");
+                    if (!reg.test(this.value) || this.value.length < 5 || keyCode > 47 && keyCode < 58) {
+                        this.value = new_value;
+                    }
+                    if (event.type == "blur" && this.value.length < 5) {
+                        this.value = "";
+                    }
+                }
+                input.addEventListener("input", mask, false);
+                input.addEventListener("focus", mask, false);
+                input.addEventListener("blur", mask, false);
+                input.addEventListener("keydown", mask, false);
+
+            });
+        });   
+    </script>
+    <center>
+        <footer style="display: flex; align-items: center; justify-content: center;">
+            <div class="footer-content">
+                <a href="#"><img src="Images/Logo/logo2.png" alt="Logo" class="footer-logo"></a>
+                <p style="color:#455C86">Разработка веб-приложения:</p>
+                <p>Садкова Анна Владимировна</p>
+                <p style="color:#455C86">По техническим вопросам:</p>
+                <a href='mailto:sadkovaanna46@gmail.com?subject=Сайт%20LiteraryHaven'><p>sadkovaanna46@gmail.com</p></a>
+                <div class="social-icons">
+                <a href="#"><img src="Images/Social/telegram.png" alt="Telegram"></a>
+                <a href="#"><img src="Images/Social/vk.png" alt="VK"></a>
+                <a href="mailto:sadkovaanna46@gmail.com?subject=Сайт%20LiteraryHaven"><img src="Images/Social/email.png" alt="Email"></a>
+                </div>
+            </div>
+        </footer>
+    </center>
+</body>
+</html>

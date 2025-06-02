@@ -1,0 +1,2482 @@
+@font-face {
+    font-family: 'Bleeker';
+    src: url('Fonts/BleekerRus.otf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Bleeker', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FCDCBD;
+    overflow-x: hidden;
+}
+
+header {
+    background-color: #FFCC4C;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo img {
+    display: flex;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #455C86;
+    font-family: 'Bleeker', sans-serif;
+}
+a {
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #FF88B7;
+}
+
+.user-profile {
+    position: relative;
+    display: inline-block;
+}
+
+.exit-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #FCDCBD;
+    border-radius: 8px;
+    padding: 10px;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    z-index: 10;
+}
+.exit-icon {
+    display: block;
+}
+
+.user-profile:hover .exit-container {
+    display: block;
+    opacity: 1;
+}
+
+.profile-icon {
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.banner {
+    position: relative;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.banner img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    transition: opacity 1s ease-in-out;
+    margin: 0;
+    object-fit: cover;
+}
+
+.banner::before {
+    content: "";
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(252, 220, 189, 0.7) 0%, rgba(252, 220, 189, 0.2) 21.98%, rgba(252, 220, 189, 0.95) 100%);
+    z-index: 1;
+}
+
+.banner p {
+    position: absolute;
+    bottom: 5%;
+    left: 15%;
+    color: #455C86;
+    font-family: 'Bleeker', sans-serif;
+    margin: 0;
+    z-index: 2;
+    text-align: left;
+    width: 50%;
+}
+
+.exit-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-bookmark {
+    background-repeat: no-repeat;
+    padding: 1% 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-title {
+    text-align: center;
+    font-family: 'Bleeker', sans-serif;
+    color: #455C86;
+    align-content: center;
+    margin: 0;
+}
+
+#left {
+    background-position: left;
+    z-index: -1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#left h2 {
+    background-position: left;
+    margin: 0;
+    margin-left: 15%;
+    margin-top: -1%;
+}
+
+#right {
+    background-position: right;
+    z-index: -1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#right h2 {
+    background-position: right;
+    margin: 0;
+    margin-right: 15%;
+    margin-top: -1%;
+}
+
+.book-cards, .genre-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px auto;
+    font-family: 'Bleeker', sans-serif;
+    color:#455C86;
+    text-align: center;
+}
+.book-cards a, .genre-cards a{
+    color:#455C86;
+}
+
+#more-books-card:hover, #more-genres-card {
+    box-shadow: none;
+}
+
+.book-card, .genre-card, .award-card {
+    text-align: center;
+}
+.book-card:hover, .genre-card:hover, .award-card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+#author-name-p{
+    color:#8893CD
+}
+
+#more-books, #more-genres {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+}
+
+.book-cover-img {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.book-card img, .genre-card img {
+    width: 100%;
+    height: 200px;
+}
+.award-card img {
+    width: 100%;
+}
+
+footer {
+    background-color: #FFCC4C;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0 15%;
+    align-items: center;
+    position: relative;
+}
+
+.footer-content {
+    padding: 20px;
+}
+
+
+.footer-content p {
+    text-align: center;
+    margin: 10px 0;
+    color: #8893CD;
+    font-family: 'Bleeker', sans-serif;
+}
+
+.social-icons a {
+    margin-right: 10px;
+}
+
+.footer-menu {
+    position: absolute;
+    display: flex;
+    padding-top: 0;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    justify-content: flex-end;
+}
+
+.user-menu, .books-menu {
+    font-family: 'Bleeker', sans-serif;
+    text-align: center;
+}
+
+.user-menu {
+    background-image: url('Images/Navigation/FooterBlueMenu.png');
+    height: auto;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 1% 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+}
+
+.books-menu {
+    background-image: url('Images/Navigation/FooterPinkMenu.png');
+    height: auto;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 1% 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    margin-top: 0;
+}
+
+.user-menu h3 {
+    color: #2244FF;
+    font-family: 'Bleeker', sans-serif;
+}
+
+.books-menu h3{
+    color: #FF0065;
+    font-family: 'Bleeker', sans-serif;
+}
+
+.user-menu ul, .books-menu ul {
+    list-style: none;
+    padding: 0;
+    padding-bottom: 20%;
+}
+
+.user-menu ul li a{
+    text-decoration: none;
+    color: #4A66FF;
+    font-family: 'Bleeker', sans-serif;
+}
+
+.books-menu ul li a {
+    text-decoration: none;
+    color: #FF2279;
+    font-family: 'Bleeker', sans-serif;
+}
+
+.user-menu ul li a:hover {
+    color: #8893CD;
+}
+
+.books-menu ul li a:hover {
+    color: #cd5786;
+}
+
+footer {
+    padding: 0;
+    clear: both;
+    overflow: hidden;
+    margin: 0;
+}
+
+/*АВТОРИЗАЦИЯ*/
+.mini-header {
+    justify-content: center;
+    align-items: center;
+}
+
+.autorisation-form {
+    display: flex;
+    justify-content: center;
+    background-color: #FCDCBD;
+    color: #455C86;
+    text-align: center;
+    margin: 5% 15%;
+}
+
+.autorisation-form input {
+    color: #455C86;
+    font-family: 'Bleeker', sans-serif;
+    text-align: center;
+}
+.autorisation-form a {
+    color: #455C86;
+}
+
+#autorisation-button{
+    background-color: #FF88B7;
+    border: none;
+    padding: 2%;
+    margin: 5% 0;
+}
+#autorisation-button:hover{
+    background-color: #455C86;
+    color:#FCDCBD;
+}
+.autorisation-body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(Images/Banner/bookshelf2.jfif);
+    background-attachment: fixed;
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px);
+    width: 100%;
+    height: auto;
+    z-index: -1;
+}
+.exit-container button{
+    border: none;
+    /*background-image: url(Images/Navigation/Exit.png);*/
+    background-color: #FCDCBD;
+}
+.autorisation-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+/*Библиотека*/
+#SearchBox, #genreSelect {
+    font-family: 'Bleeker', sans-serif;
+    margin-left: 15%;
+    color: #455C86;
+}
+#genreSelect{
+    margin-left: 5%;
+}
+
+.book-cover-img{
+    object-fit: cover;
+}
+.book-card img {
+    width: 100%;
+    height: 55%;
+}
+#no-results {
+    display: none; 
+    text-align: center; 
+    margin: 20px;
+}
+#no-results p{
+    color: #455C86;
+    font-size: 200%;
+}
+.mini-label{
+    font-size: 180%;
+}
+.add-book-button a{
+    text-decoration: none;
+}
+.add-book-button button{
+    border-radius: 10px;
+    background-color: #FF87B9;
+    border: none;
+    color:#455C86;
+    font-family: 'Bleeker', sans-serif;
+}
+.add-book-button button:hover{
+    background-color: #455C86;
+    color: white;
+}
+
+/**/
+.error-header{
+    text-align: center;
+    color: #cd5786;
+    margin: 10% 15% 0 15%;
+}
+.error-descr{
+    text-align: center;
+    color:#455C86;
+    margin: 1% 15% 10% 15%;
+}
+
+.error-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+}
+
+/*Читатели*/
+
+#num_indicators, #indicators-name{
+    text-align: center;
+}
+#num_indicators p, #indicators-name p{
+    margin: 0 10px;
+}
+#num_indicators {
+    color:#FF0065;
+    font-size: 40px;
+}
+.readers-profile-icon {
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.readers-table{
+    color:#455C86;
+    columns: auto;
+    border-collapse: collapse;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.follow-reader-button{
+    width: 40px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+.readers-table tr{
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+.readers-table th, .readers-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+.reader-nick-status {
+    font-size: 25px;
+    cursor: pointer;
+}
+.reader-nick-status a{
+    color: #455C86;
+}
+.reader-nick-status img{
+    width: 15px;
+}
+.reader-nick-status p{
+    margin:0 20px;
+}
+.rank-style{
+    padding-right: 20px;
+    font-size: 20pt;
+}
+/*Награды*/
+.grayscale {
+    filter: grayscale(100%);
+}
+
+/*Выбранная книга*/
+.select-book table{
+    margin: 5% 15% 1% 15%;
+    color: #455C86;
+}
+.select-book p{
+    margin: 0;
+}
+.sel-book-genre{
+    font-size: 20pt;
+}
+.select-book img{
+    width: 300px;
+    margin-right: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.sel-book-descr{
+    text-align: justify;
+}
+.sel-book-n {
+    font-size: 40pt;
+    font-weight: bolder;
+}
+.sel-book-score{
+    font-weight: bold;
+    font-size: 20pt;
+}
+.mob-cover-sel-book{
+    display: none;
+}
+
+.select-book button{
+    margin-bottom: 5%;
+    width: 300px;
+    height: 50px;
+    font-size: 16pt;
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bleeker', sans-serif;
+    color:#455C86;
+    background-color: #FF87B9;
+}
+.select-book button:hover{
+    color:white;
+    background-color: #455C86;
+}
+.select-book-rewiew{
+    margin: 0 15%;
+}
+
+.review-box {
+    background-color: #ffda7d;
+    border-radius: 30px;
+    vertical-align: middle;
+    align-items: center;
+    padding: 3% 5%;
+    margin-bottom: 5%;
+}
+
+.review-box a{
+    color: #FF2279;
+}
+
+.review-box p {
+    color: #455C86;
+    text-align: center;
+}
+.score-img{
+    font-weight: bold;
+    font-size: 18pt;
+}
+
+.label-review {
+    font-size: 20pt;
+    font-weight: bold;
+}
+.review-user-photo{
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-top: auto;
+}
+
+.edit-rev-style img{
+    width: 30px;
+}
+.nav-menu-review{
+    width: 100%;
+    border-collapse: collapse;
+}
+#nav-menu-review-start{
+    text-align: left;
+    padding-left: 1%;
+}
+#nav-menu-review-end{
+    text-align: right;
+    padding-right: 1%;
+}
+#nav-menu-review-start,
+#nav-menu-review-end {
+    margin: 0;
+}
+
+/*Цитаты*/
+.new-quote-style {
+    margin-top: 1%;
+    margin-bottom: 5%;
+    width: 300px;
+    height: 50px;
+    font-size: 16pt;
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bleeker', sans-serif;
+    color: #455C86;
+    background-color: #FF87B9;
+}
+
+/*Рецензия на книгу*/
+.rating {
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.star {
+    font-size: 50px;
+    color: lightgray;
+}
+
+.star:hover {
+    color: gold;
+}
+
+.star.selected {
+    color: gold;
+}
+.new-review-section table{
+    margin: 0% 15% 3% 15%;
+    color: #455C86;
+    align-items: center;
+}
+.new-review-book-img{
+    width: 300px;
+    align-items: center;
+}
+.new-review-book-label {
+    font-size: 24px;
+}
+#AddNewReview{
+    margin-bottom: 5%;
+    width: 300px;
+    height: 50px;
+    font-size: 16pt;
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bleeker', sans-serif;
+    color:#455C86;
+    background-color: #FF87B9;
+}
+#AddNewReview:hover{
+    color:white;
+    background-color: #455C86;
+}
+.new-review-user label{
+    font-size: 14pt;
+}
+.new-review-user input, .new-review-user textarea{
+    font-size: 14pt;
+    font-family: 'Bleeker', sans-serif;
+    border: #FF87B9 2px solid;
+    border-radius: 10px;
+    text-align: center;
+    margin: 1%;
+    color: #455C86;
+}
+#user-review-box{
+    width: 320px;
+    height: 150px;
+    text-wrap: wrap;
+}
+#reading-time-box{
+    width: 150px;
+    height: 30px;
+}
+#rating-value{
+    font-size: 40px;
+}
+
+/*Профиль*/
+.user-profile-head {
+    margin: 20px 15%;
+}
+.user-profile-icon-head{
+    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+}
+.us-nick-head img {
+    width: 43px;
+}
+.us-nick-head p {
+    color: #455C86;
+    font-size: 48pt;
+    text-align: center;
+    margin: 1% 0;
+}
+.us-num-head{
+    font-size: 40pt;
+    text-align: center;
+}
+.us-exp-head{
+    font-size: 16pt;
+    text-align: center;
+}
+.us-exp-head p{
+    padding: 0 10px;
+    margin: 0;
+}
+.us-num-head p {
+    margin: 0;
+}
+#user-no-book {
+    margin: 10% 0;
+    color: #455C86;
+    text-align: center;
+    font-size: 32pt;
+}
+
+/*Цитата*/
+.new-quote label{
+    color:#455C86;
+    font-size: 14pt;
+}
+.new-quote textarea, .new-quote input, .new-read-book-user input, 
+.new-read-book-user textarea, .new-read-book-user select{
+    font-size: 14pt;
+    font-family: 'Bleeker', sans-serif;
+    border: #FF87B9 2px solid;
+    border-radius: 10px;
+    text-align: center;
+    margin: 1%;
+    color: #455C86;
+}
+#reading-page-box {
+    width: 150px;
+    height: 30px;
+}
+#user-quote-box {
+    width: 320px;
+    height: 150px;
+    text-wrap: wrap;
+}
+#AddNewQuote, #AddNewReading{
+    margin-bottom: 5%;
+    width: 300px;
+    height: 50px;
+    font-size: 16pt;
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bleeker', sans-serif;
+    color: #455C86;
+    background-color: #FF87B9;
+}
+#AddNewQuote:hover, #AddNewReading:hover{
+    color: white;
+    background-color: #455C86;
+}
+
+/*Новая книга*/
+.add-img-book{
+    font-size: 16pt;
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bleeker', sans-serif;
+    color: #455C86;
+    background-color: #FFCC4C;
+    text-align: center;
+    padding: 3% 5%;
+}
+.add-img-book:hover{
+    color: white;
+    background-color: #455C86;
+}
+.new-read-book-user label{
+    color:#455C86;
+    font-size: 14pt;
+}
+.new-read-book-user input {
+    width: 200px;
+    height: 30px;
+}
+.new-read-book-user textarea {
+    width: 320px;
+    height: 150px;
+    text-wrap: wrap;
+}
+
+/*Подписки*/
+.no-sub{
+    color: #455C86;
+    font-size: 24pt;
+    margin: 5% 15%;
+}
+/*Изменение профиля*/
+.us-prof-img{
+    border-radius: 50%;
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+}
+
+/*Главная страница админа*/
+/*.admin-home-block div{
+    border-radius: 0 50px 50px 0;
+    color: #455C86;
+    font-size: 40pt;
+    margin-left: 0;
+    margin-right: 10%;
+}*/
+/*Книги админ*/
+.moder-but{
+    font-family: 'Bleeker', sans-serif;
+    color: #455C86;
+    background-color: #FF87B9;
+    border-radius: 10px;
+    margin-left: 5%;
+    width: 250px;
+    font-size: 16pt;
+    border: none;
+}
+.moder-but:hover{
+    color: white;
+    background-color: #455C86;
+}
+.block-but{
+    width: 25px;
+    padding-left: 2%;
+}
+.admin-section-img{
+    width: 200px;
+    object-fit: contain;
+}
+
+.admin-home-section, .admin-home-section-right{
+    display: grid;
+    align-items: center;
+    font-size: 46pt;
+    color:#455C86;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.admin-home-section:hover, .admin-home-section-right:hover{
+    transform: scale(1.02);
+}
+
+.admin-home-section{
+    grid-template-columns: auto 1fr;
+    border-radius: 0 1000px 1000px 0;
+    margin-left: 0;
+    margin-right: 15%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+.admin-home-section-right{
+    grid-template-columns: 1fr auto;
+    border-radius: 1000px 0 0 1000px;
+    margin-left: 15%;
+    margin-right: 0;
+}
+
+@media (min-width: 1650px) { 
+    .profile-icon {
+        width: 60px;
+        height: 60px;
+    }
+    .exit-icon {
+        width: 50px;
+        height: 50px;
+    }
+    .exit-icon img{
+        width: 50px;
+        height: 50px;
+    }
+    .nav-menu{
+        display: none;
+    }
+
+    .logo img{
+        height: 80px;
+    }
+    nav a {
+        font-size: 16pt;
+    }
+
+    .banner p {
+        font-size: 80pt;
+    }
+
+    .section-title {
+        font-size: 44px;
+        width: 30%;
+        height: 150px;
+    }
+
+    .section-bookmark{
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .book-cards p, .genre-cards p{
+        font-size: 16pt;
+    }
+    .book-card, .genre-card, .award-card {
+        border-radius: 5px;
+        width: 170px;
+        margin: 10px;
+        text-align: center;
+        padding: 10px;
+    }
+    .genre-card{
+        width: 300px;
+    }
+    .book-card img{
+        height: 250px;
+    }
+    #more-books-card, #more-genres-card {
+        width: 30px;
+    }
+    #more-books-card {
+        margin-top: 5%;
+        height: 70px;
+    }
+    #more-genres-card {
+        margin-top: 4%;
+        height: 60px;
+    }
+    #more-books {
+        height: 70px;
+    }
+    #more-genres {
+        height: 60px;
+    }
+
+    .footer-logo{
+        width: 280px;
+    }
+    .footer-content p{
+        font-size: 18pt;
+    }
+    .social-icons img {
+        width: 50px;
+    }
+    .footer-content, .footer-menu{
+        margin: 0 15%;
+    }
+    .footer-menu {
+        padding-bottom: 20px;
+    }
+    .user-menu, .books-menu {
+        margin-left: 20px;
+        width: 250px;
+    }      
+    .user-menu h3, .books-menu h3 {
+        font-size: 28px;
+    }
+    .user-menu a, .books-menu a {
+        font-size: 16pt;
+    }
+    /*АВТОРИЗАЦИЯ*/
+    .autorisation-form h1 {
+        font-size: 45pt;
+    }
+
+    .autorisation-form{
+        font-size: 24pt;
+        border-radius: 40px;
+        padding: 3%;
+    }
+
+    .autorisation-form input {
+        border: #455C86 solid 3px;
+        border-radius: 10px;
+        font-size: 16pt;
+        width: 250px;
+    }
+    .autorisation-form a {
+        font-size: 16pt;
+    }
+    /*Библиотека*/
+    #SearchBox, #genreSelect {
+        border: #FF87B9 solid 3px;
+        border-radius: 10px;
+        font-size: 16pt;
+        width: 250px;
+    }
+    /*ОШИБКА*/
+    .error-header{
+        font-size: 80pt;
+    }
+    .error-descr{
+        font-size: 40pt;
+    }
+    /*Читатели*/
+    .readers-profile-icon {
+        display: flex;
+        align-items: center;
+        border-radius: 50%;
+        object-fit: cover;
+        width: 100px;
+        height: 100px;
+    }
+    /*Библиотека*/
+    .add-book-button button {
+        border-radius: 10px;
+        width: 300px;
+        height: 40px;
+        font-size: 18pt;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1650px) {
+    .profile-icon {
+        width: 50px;
+        height: 50px;
+    }
+    .exit-icon {
+        width: 40px;
+        height: 40px;
+    }
+    .exit-icon img {
+        width: 40px;
+        height: 40px;
+    }
+    .logo img{
+        height: 60px;
+    }
+    nav a {
+        font-size: 14pt;
+    }
+    .nav-menu{
+        display: none;
+    }
+    .banner p {
+        font-size: 65pt;
+    }
+
+    .section-title {
+        font-size: 36px;
+        width: 30%;
+        height: 100px;
+    }
+    
+
+    .book-cards p, .genre-cards p{
+        font-size: 12pt;
+    }
+    .book-card, .genre-card, .award-card {
+        border-radius: 5px;
+        width: 140px;
+        margin: 10px;
+        padding: 10px;
+    }
+    .genre-card{
+        width: 300px;
+    }
+    .book-card img {
+        height: 210px;
+    }
+    #more-books-card, #more-genres-card {
+        width: 30px;
+    }
+    #more-books-card {
+        margin-top: 5%;
+        height: 70px;
+    }
+    #more-genres-card {
+        margin-top: 4%;
+        height: 60px;
+    }
+    #more-books {
+        height: 70px;
+    }
+    #more-genres {
+        height: 60px;
+    }
+
+    .footer-logo{
+        width: 280px;
+    }
+    .footer-content p{
+        font-size: 16pt;
+    }
+    .social-icons img {
+        width: 40px;
+    }
+    .footer-content, .footer-menu{
+        margin: 0 15%;
+    }
+    .footer-menu {
+        padding-bottom: 20px;
+    }
+    .user-menu, .books-menu {
+        margin-left: 20px;
+        width: 200px;
+    }      
+    .user-menu h3, .books-menu h3 {
+        font-size: 26px;
+    }
+    .user-menu a, .books-menu a {
+        font-size: 12pt;
+    }
+    /*АВТОРИЗАЦИЯ*/
+    .autorisation-form h1 {
+        font-size: 45pt;
+    }
+
+    .autorisation-form{
+        font-size: 24pt;
+        border-radius: 40px;
+        padding: 4%;
+    }
+
+    .autorisation-form input {
+        border: #455C86 solid 3px;
+        border-radius: 10px;
+        font-size: 16pt;
+        width: 250px;
+    }
+    .autorisation-form a {
+        font-size: 16pt;
+    }
+    /*Библиотека*/
+    #SearchBox, #genreSelect {
+        border: #FF87B9 solid 3px;
+        border-radius: 10px;
+        font-size: 16pt;
+        width: 250px;
+    }
+    .add-book-button button{
+        font-size: 20pt;
+        padding: 15px 25px 15px 25px;
+    }
+    /*ОШИБКА*/
+    .error-header{
+        font-size: 70pt;
+    }
+    .error-descr{
+        font-size: 35pt;
+    }
+    /*Читатели*/
+    .readers-profile-icon {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (min-width: 950px) and (max-width: 1200px) {
+    .profile-icon {
+        width: 30px;
+        height: 30px;
+    }
+    .exit-icon {
+        width: 25px;
+        height: 25px;
+    }
+    .exit-icon img{
+        width: 25px;
+        height: 25px;
+    }
+    .logo img{
+        height: 36px;
+    }
+    nav a {
+        font-size: 10pt;
+    }
+    .nav-menu{
+        display: none;
+    }
+    .banner p {
+        font-size: 40pt;
+    }
+
+    .section-title {
+        font-size: 22pt;
+        height: 100px;
+        width: 35%;
+    }
+    .book-cards, .genre-cards{
+        margin: 10px;
+        margin: 0 10%;
+    }
+    .section-bookmark{
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .book-cards p, .genre-cards p{
+        font-size: 12pt;
+    }
+    .book-card, .genre-card, .award-card {
+        border-radius: 5px;
+        width: 120px;
+        margin: 10px;
+        padding: 10px;
+    }
+    .genre-card{
+        width: 200px;
+    }
+    .book-card img{
+        height: 180px;
+    }
+    #more-books-card, #more-genres-card {
+        width: 20px;
+    }
+    #more-books-card {
+        margin-top: 8%;
+        height: 60px;
+    }
+    #more-genres-card {
+        margin-top: 5%;
+        height: 50px;
+    }
+    #more-books {
+        height: 60px;
+    }
+    #more-genres {
+        height: 50px;
+    }
+
+    .footer-logo{
+        width: 160px;
+    }
+    .footer-content p{
+        font-size: 12pt;
+    }
+    .social-icons img {
+        width: 20px;
+    }
+    .footer-content, .footer-menu{
+        margin: 0 15%;
+    }
+    .footer-menu {
+        padding-bottom: 10px;
+    }
+    .user-menu, .books-menu {
+        margin-left: 5px;
+    }
+    .user-menu, .books-menu {
+        width: 130px;
+    }
+    .user-menu h3, .books-menu h3 {
+        font-size: 12pt;
+    }
+    .user-menu a, .books-menu a {
+        font-size: 10pt;
+    }
+    /*АВТОРИЗАЦИЯ*/
+    .autorisation-form h1 {
+        font-size: 32pt;
+    }
+
+    .autorisation-form{
+        font-size: 18pt;
+        border-radius: 20px;
+        padding: 3%;
+    }
+
+    .autorisation-form input {
+        border: #455C86 solid 3px;
+        border-radius: 10px;
+        font-size: 14pt;
+        width: 230px;
+    }
+    .autorisation-form a {
+        font-size: 14pt;
+    }
+    /*Библиотека*/
+    #SearchBox, #genreSelect {
+        border: #FF87B9 solid 3px;
+        border-radius: 10px;
+        font-size: 14pt;
+        width: 230px;
+    }
+    /*ОШИБКА*/
+    .error-header{
+        font-size: 50pt;
+    }
+    .error-descr{
+        font-size: 25pt;
+    }
+    /*Книги*/
+    .add-book-button button {
+        margin-top: 1%;
+        margin-bottom: 5%;
+        width: 300px;
+        height: 50px;
+        font-size: 16pt;
+        border-radius: 15px;
+    }
+    /*Читатели*/
+    .readers-profile-icon{
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (min-width: 760px) and (max-width: 950px) {
+    .profile-icon {
+        width: 30px;
+        height: 30px;
+    }
+    .exit-icon {
+        width: 25px;
+        height: 25px;
+    }
+    .exit-icon img {
+        width: 25px;
+        height: 25px;
+    }
+    .logo img{
+        height: 36px;
+    }
+    nav a {
+        font-size: 10pt;
+    }
+    .nav-menu{
+        display: none;
+    }
+    .banner p {
+        font-size: 36pt;
+    }
+
+    .section-title {
+        font-size: 22pt;
+        height: 100px;
+        width: 45%;
+    }
+    .book-cards, .genre-cards{
+        margin: 10px;
+        margin: 0 15%;
+    }
+    .section-bookmark{
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .book-cards p, .genre-cards p{
+        font-size: 12pt;
+    }
+    .book-card, .genre-card, .award-card {
+        border-radius: 5px;
+        width: 140px;
+        margin: 10px;
+        padding: 10px;
+    }
+    .genre-card{
+        width: 200px;
+    }
+    .book-card img {
+        height: 200px;
+    }
+    #more-books-card, #more-genres-card {
+        width: 20px;
+    }
+    #more-books-card {
+        margin-top: 13%;
+        height: 60px;
+    }
+    #more-genres-card {
+        margin-top: 10%;
+        height: 50px;
+    }
+    #more-books {
+        height: 60px;
+    }
+    #more-genres {
+        height: 50px;
+    }
+
+    .footer-logo{
+        width: 160px;
+    }
+    .footer-content p{
+        font-size: 12pt;
+    }
+    .social-icons img {
+        width: 20px;
+    }
+    .footer-content, .footer-menu{
+        margin: 0 15%;
+    }
+    .footer-menu {
+        padding-bottom: 10px;
+    }
+    .user-menu, .books-menu {
+        margin-left: 5px;
+    }
+    .user-menu, .books-menu {
+        width: 130px;
+    }
+    .user-menu h3, .books-menu h3 {
+        font-size: 12pt;
+    }
+    .user-menu a, .books-menu a {
+        font-size: 10pt;
+    }
+    /*АВТОРИЗАЦИЯ*/
+    .autorisation-form h1 {
+        font-size: 28pt;
+    }
+
+    .autorisation-form{
+        font-size: 16pt;
+        border-radius: 20px;
+        padding: 3%;
+    }
+
+    .autorisation-form input {
+        border: #455C86 solid 3px;
+        border-radius: 8px;
+        font-size: 12pt;
+        width: 220px;
+    }
+    .autorisation-form a {
+        font-size: 12pt;
+    }
+    /*Библиотека*/
+    #SearchBox, #genreSelect {
+        border: #FF87B9 solid 3px;
+        border-radius: 8px;
+        font-size: 12pt;
+        width: 220px;
+    }
+    /*ОШИБКА*/
+    .error-header{
+        font-size: 50pt;
+    }
+    .error-descr{
+        font-size: 25pt;
+    }
+    
+    /*Карточка книги*/
+    .select-book img {
+        width: 200px;
+    }
+    .sel-book-n {
+        font-size: 30pt;
+    }
+    .sel-book-descr, .review-box p, #nav-menu-review-end{
+        font-size: 10pt;
+    }
+    .edit-rev-style img {
+        width: 25px;
+    }
+    .sel-book-genre, .sel-book-score, .label-review {
+        font-size: 18pt;
+    }
+    /*Рецензия на книгу*/
+    .new-review-book-img {
+        width: 200px;
+    }
+    .new-review-book-label {
+        font-size: 26px;
+        text-align: center;
+    }
+    .new-review-user label, .new-quote label, .new-read-book-user label{
+        font-size: 14pt;
+    }
+    .star, #rating-value {
+        font-size: 30px;
+    }
+    #user-review-box {
+        width: 300px;
+        height: 150px;
+        font-size: 14pt;
+    }
+    #AddNewReview, .new-quote-style, #AddNewQuote, .add-book-button button, #AddNewReading {
+        width: 200px;
+        height: 45px;
+        font-size: 14pt;
+        border-radius: 12px;
+    }
+    #no-results p {
+        color: #455C86;
+        font-size: 170%;
+    }
+    /*Цитаты*/
+    #user-quote-box {
+        width: 300px;
+        height: 150px;
+        font-size: 14pt;
+    }
+    #reading-page-box {
+        font-size: 14pt;
+    }
+    /*Новая книга*/
+    .add-img-book {
+        font-size: 12pt;
+        border-radius: 10px;
+    }
+    .new-read-book-user input, .new-read-book-user textarea, .new-read-book-user select {
+        font-size: 14pt;
+        width: 200px;
+    }
+    #AddNewReading {
+        width: 250px;
+        height: 45px;
+        font-size: 12pt;
+        border-radius: 12px;
+    }
+    /*Читатели*/
+    .readers-profile-icon{
+        width: 50px;
+        height: 50px;
+    }
+    .follow-reader-button {
+        width: 30px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    .reader-nick-status {
+        font-size: 18px;
+    }
+    .reader-nick-status {
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .reader-nick-status img {
+        width: 10px;
+    }
+    .rank-style {
+        padding-right: 10px;
+        font-size: 14pt;
+    }
+    #indicators-name{
+        font-size: 10pt;
+    }
+    #num_indicators {
+        font-size: 30px;
+    }
+    /*Профиль*/
+    .user-profile-icon-head {
+        width: 120px;
+        height: 120px;
+    }
+    .us-nick-head p {
+        font-size: 30pt;
+    }
+    .us-nick-head img {
+        width: 30px;
+    }
+    .us-num-head {
+        font-size: 28pt;
+    }
+    .us-exp-head {
+        font-size: 10pt;
+    }
+    .us-prof-img {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 760px) {
+    .profile-icon {
+        width: 20px;
+        height: 20px;
+    }
+    .exit-icon {
+        width: 15px;
+        height: 15px;
+    }
+    .exit-icon img {
+        width: 15px;
+        height: 15px;
+    }
+    .logo img{
+        height: 24px;
+    }
+    nav a {
+        font-size: 8pt;
+    }
+    .nav-menu{
+        display: none;
+    }
+    .banner p {
+        font-size: 26pt;
+    }
+
+    .section-title {
+        font-size: 16pt;
+        height: 70px;
+        width: 45%;
+    }
+    .book-cards, .genre-cards{
+        margin: 10px;
+    }
+    .section-bookmark{
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .book-cards p, .genre-cards p{
+        font-size: 10pt;
+    }
+    .book-card, .genre-card, .award-card {
+        border-radius: 5px;
+        width: 110px;
+        margin: 10px;
+        padding: 10px;
+    }
+    .genre-card{
+        width: 100px;
+    }
+    .book-card {
+        height: 65%;
+    }
+    .book-card img {
+        height: 155px;
+    }
+    #more-books-card, #more-genres-card {
+        width: 15px;
+    }
+    #more-books-card {
+        margin-top: 13%;
+        height: 50px;
+    }
+    #more-genres-card {
+        margin-top: 10%;
+        height: 40px;
+    }
+    #more-books {
+        height: 50px;
+    }
+    #more-genres {
+        height: 40px;
+    }
+
+    .footer-logo{
+        width: 100px;
+    }
+    .footer-content p{
+        font-size: 10pt;
+    }
+    .social-icons img {
+        width: 20px;
+    }
+    .footer-content, .footer-menu{
+        margin: 0 3%;
+    }
+    .footer-menu {
+        padding-bottom: 10px;
+    }
+    .user-menu, .books-menu {
+        margin-left: 5px;
+    }
+    .user-menu, .books-menu {
+        width: 130px;
+    }
+    .user-menu h3, .books-menu h3 {
+        font-size: 12pt;
+    }
+    .user-menu a, .books-menu a {
+        font-size: 10pt;
+    }
+    /*АВТОРИЗАЦИЯ*/
+    .autorisation-form h1 {
+        font-size: 24pt;
+    }
+    .autorisation-form{
+        font-size: 12pt;
+        border-radius: 20px;
+        padding: 3%;
+    }
+
+    .autorisation-form input {
+        border: #455C86 solid 2px;
+        border-radius: 6px;
+        font-size: 10pt;
+        width: 180px;
+    }
+    .autorisation-form a {
+        font-size: 10pt;
+    }
+    /*Библиотека*/
+    #SearchBox, #genreSelect {
+        border: #FF87B9 solid 2px;
+        border-radius: 6px;
+        font-size: 10pt;
+        width: 180px;
+    }
+    /*ОШИБКА*/
+    .error-header{
+        font-size: 40pt;
+    }
+    .error-descr{
+        font-size: 14pt;
+    }
+    /*Карточка книги*/
+    .select-book img {
+        width: 200px;
+    }
+    .sel-book-n {
+        font-size: 20pt;
+    }
+    .sel-book-genre, .sel-book-score, .label-review {
+        font-size: 14pt;
+    }
+    .sel-book-descr, .review-box p, #nav-menu-review-end{
+        font-size: 8pt;
+    }
+    .edit-rev-style img {
+        width: 20px;
+    }
+    /*Рецензия на книгу*/
+    .new-review-book-img {
+        width: 150px;
+    }
+    .new-review-book-label {
+        font-size: 24px;
+        text-align: center;
+    }
+    .new-review-user label, .new-quote label, .new-read-book-user label{
+        font-size: 12pt;
+    }
+    .star, #rating-value {
+        font-size: 30px;
+    }
+    #user-review-box {
+        width: 200px;
+        height: 150px;
+        font-size: 12pt;
+    }
+    #AddNewReview, .new-quote-style, #AddNewQuote, .add-book-button button, #AddNewReading {
+        width: 200px;
+        height: 40px;
+        font-size: 12pt;
+        border-radius: 10px;
+    }
+    #no-results p {
+        color: #455C86;
+        font-size: 170%;
+    }
+    /*Цитаты*/
+    #user-quote-box {
+        width: 200px;
+        height: 150px;
+        font-size: 12pt;
+    }
+    #reading-page-box {
+        font-size: 12pt;
+    }
+    /*Новая книга*/
+    .add-img-book {
+        font-size: 8pt;
+        border-radius: 10px;
+    }
+    .new-read-book-user input, .new-read-book-user textarea, .new-read-book-user select {
+        font-size: 12pt;
+        width: 200px;
+    }
+    /*Читатели*/
+    .readers-profile-icon{
+        width: 50px;
+        height: 50px;
+    }
+    .follow-reader-button {
+        width: 30px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    .reader-nick-status {
+        font-size: 18px;
+    }
+    .reader-nick-status {
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .reader-nick-status img {
+        width: 10px;
+    }
+    .rank-style {
+        padding-right: 10px;
+        font-size: 14pt;
+    }
+    #indicators-name{
+        font-size: 10pt;
+    }
+    #num_indicators {
+        font-size: 30px;
+    }
+    /*Профиль*/
+    .user-profile-icon-head {
+        width: 120px;
+        height: 120px;
+    }
+    .us-nick-head p {
+        font-size: 30pt;
+    }
+    .us-nick-head img {
+        width: 30px;
+    }
+    .us-num-head {
+        font-size: 28pt;
+    }
+    .us-exp-head {
+        font-size: 10pt;
+    }
+    .us-prof-img {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .profile-icon {
+        width: 20px;
+        height: 20px;
+    }
+    .exit-icon {
+        width: 15px;
+        height: 15px;
+    }
+    .exit-icon img {
+        width: 15px;
+        height: 15px;
+    }
+    .logo img{
+        height: 25px;
+    }
+    
+    .nav-menu:hover .menu-container {
+        display: block;
+        opacity: 1;
+    }
+    .nav-menu{
+        position: relative;
+        display: inline-block;
+    }
+    .menu-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #FCDCBD;
+        border-radius: 8px;
+        padding: 10px;
+        transition: opacity 0.3s ease;
+        opacity: 0;
+        z-index: 10;
+    }
+    .nav-menu a {
+        color: #455C86;
+        text-decoration: none;
+        padding-bottom: 1%;
+    }
+    .nav-menu a:hover {
+        color: #FF88B7;
+    }
+    .banner p {
+        font-size: 18pt;
+    }
+
+    .section-title {
+        font-size: 12pt;
+        height: 50px;
+        width: 45%;
+    }
+    .section-bookmark{
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .book-cards, .genre-cards{
+        margin: 5px;
+    }
+    .book-cards p, .genre-cards p{
+        font-size: 10px;
+    }
+    .book-card, .genre-card, .award-card {
+        border-radius: 5px;
+        width: 80px;
+        margin: 10px;
+        padding: 10px;
+    }
+    .book-card img {
+        height: 120px;
+    }
+    #more-books-card, #more-genres-card {
+        width: 8px;
+    }
+    #more-books-card {
+        margin-top: 13%;
+        height: 30px;
+    }
+    #more-genres-card {
+        margin-top: 10%;
+        height: 25px;
+    }
+    #more-books {
+        height: 30px;
+    }
+    #more-genres {
+        height: 25px;
+    }
+
+    .footer-logo{
+        width: 100px;
+    }
+    .footer-content p{
+        font-size: 10pt;
+    }
+    .social-icons img {
+        width: 20px;
+    }
+    footer{
+        margin: 0;
+        padding: 0;
+        clear: both;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .footer-menu{
+        display: none;
+    }
+    .footer-content{
+        margin: 0 15%;
+    }
+    nav a{
+        display: none;
+    }
+    /*АВТОРИЗАЦИЯ*/
+    .autorisation-form h1 {
+        font-size: 20pt;
+    }
+    .autorisation-form{
+        font-size: 10pt;
+        border-radius: 12px;
+        padding: 3%;
+    }
+
+    .autorisation-form input {
+        border: #455C86 solid 2px;
+        border-radius: 6px;
+        font-size: 8pt;
+        width: 150px;
+    }
+
+    .autorisation-form a {
+        font-size: 8pt;
+    }
+    /*Библиотека*/
+    #SearchBox, #genreSelect {
+        border: #FF87B9 solid 2px;
+        border-radius: 6px;
+        font-size: 8pt;
+        width: 150px;
+    }
+    #genreSelect{
+        margin-left: 15%;
+    }
+    .add-book-button button {
+        font-size: 14pt;
+        padding: 15px 25px 15px 25px;
+    }
+    /*Карточка книги*/
+    .web-cover-sel-book {
+       display: none;
+    }
+    .select-book img{
+        width: 200px;
+    }
+    .mob-cover-sel-book{
+        margin: 0;
+        width: 200px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .sel-book-n {
+        font-size: 16pt;
+    }
+    .sel-book-genre, .sel-book-score {
+        font-size: 10pt;
+    }
+    .sel-book-descr {
+        font-size: 8pt;
+    }
+    .label-review {
+        font-size: 10pt;
+    }
+    .review-box p {
+        font-size: 8pt;
+    }
+    .score-img {
+        font-size: 12pt;
+    }
+    .review-box a {
+        font-size: 8pt;
+    }
+    .edit-rev-style img {
+        width: 20px;
+    }
+    .mob-cover-sel-book{
+        display: block;
+    }
+    .new-review-book-img {
+        display: none;
+    }
+    .new-read-book-user, .new-review-user{
+        margin-left: -40px;
+    }
+    .new-read-book-user textarea {
+        width: 200px;
+        height: 150px;
+        font-size: 8pt;
+    }
+    .new-read-book-user select {
+        font-size: 8pt;
+    }
+
+    .new-review-book-label {
+        display: none;
+    }
+    .new-review-user label {
+        font-size: 8pt;
+    }
+    #user-review-box {
+        width: 200px;
+        height: 150px;
+        text-wrap: wrap;
+        font-size: 8pt;
+    }
+    .star, #rating-value {
+        font-size: 25px;
+    }
+    #AddNewReview {
+        width: 200px;
+        height: 30px;
+        font-size: 8pt;
+        border-radius: 8px;
+    }
+    /*Цитаты*/
+    .new-quote-style, #AddNewQuote, #AddNewReading {
+        margin-top: 1%;
+        margin-bottom: 5%;
+        width: 200px;
+        height: 30px;
+        font-size: 10pt;
+        border-radius: 8px;
+    }
+    .new-quote label {
+        font-size: 10pt;
+    }
+    #user-quote-box, #reading-page-box {
+        font-size: 10pt;
+    }
+    /*Профиль*/
+    .user-profile-icon-head {
+        width: 80px;
+        height: 80px;
+    }
+    .us-nick-head p {
+        font-size: 20pt;
+    }
+    .us-nick-head img {
+        width: 20px;
+    }
+    .us-num-head {
+        font-size: 16pt;
+    }
+    .us-exp-head {
+        font-size: 6pt;
+    }
+    .user-profile-head {
+        margin: 20px 5%;
+    }
+    .us-prof-img {
+        display: none;
+    }
+    .new-read-book-user label{
+        font-size: 8pt;
+    }
+    .new-read-book-user input{
+        width: 100px;
+        height: 12px;
+        font-size: 8pt;
+    }
+    .add-img-book {
+        display: none;
+    }   
+    /*ОШИБКА*/
+    .error-header{
+        font-size: 30pt;
+    }
+    .error-descr{
+        font-size: 10pt;
+    }
+    /*Читатели*/
+    .readers-profile-icon {
+        width: 40px;
+        height: 40px;
+    }
+    .reader-nick-status {
+        font-size: 12px;
+    }
+    #num_indicators {
+        font-size: 20px;
+    }
+    #indicators-name {
+        font-size: 8px;
+    }
+    .reader-nick-status img {
+        width: 7px;
+    }
+    .follow-reader-button {
+        width: 15px;
+        margin-left: 5px;
+    }
+    .rank-style {
+        padding-right: 20px;
+        font-size: 16pt;
+    }
+}
+
+@media (max-width: 320px) {
+    .profile-icon {
+        width: 20px;
+        height: 20px;
+    }
+    .exit-icon {
+        width: 15px;
+        height: 15px;
+    }
+    .exit-icon img {
+        width: 15px;
+        height: 15px;
+    }
+    .logo img{
+        height: 25px;
+    }
+    .nav-menu:hover .menu-container {
+        display: block;
+        opacity: 1;
+    }
+    .nav-menu{
+        position: relative;
+        display: inline-block;
+    }
+    .menu-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #FCDCBD;
+        border-radius: 8px;
+        padding: 10px;
+        transition: opacity 0.3s ease;
+        opacity: 0;
+        z-index: 10;
+    }
+    .nav-menu a {
+        color: #455C86;
+        text-decoration: none;
+        padding-bottom: 1%;
+    }
+    .nav-menu a:hover {
+        color: #FF88B7;
+    }
+    .banner p {
+        font-size: 18pt;
+    }
+
+    .section-title {
+        font-size: 12pt;
+        height: 50px;
+        width: 45%;
+    }
+    .section-bookmark{
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .book-cards, .genre-cards{
+        margin: 5px;
+    }
+    .book-cards p, .genre-cards p{
+        font-size: 10px;
+    }
+    .book-card, .genre-card, .award-card {
+        border-radius: 5px;
+        width: 90px;
+        margin: 10px;
+        padding: 10px;
+    }
+    .book-card img {
+        height: 130px;
+    }
+    #more-books-card, #more-genres-card {
+        width: 1px;
+    }
+    #more-books-card {
+        margin-top: 18%;
+        height: 30px;
+    }
+    #more-genres-card {
+        margin-top: 15%;
+        height: 25px;
+    }
+    #more-books {
+        height: 30px;
+    }
+    #more-genres {
+        height: 25px;
+    }
+    
+    .footer-logo{
+        width: 100px;
+    }
+    .footer-content p{
+        font-size: 10pt;
+    }
+    .social-icons img {
+        width: 20px;
+    }
+    footer{
+        margin: 0;
+        padding: 0;
+        clear: both;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .footer-menu{
+        display: none;
+    }
+    .footer-content{
+        margin: 0 15%;
+    }
+    nav a{
+        display: none;
+    }
+    /*АВТОРИЗАЦИЯ*/
+    .autorisation-form h1 {
+        font-size: 18pt;
+    }
+    .autorisation-form{
+        font-size: 8pt;
+        border-radius: 10px;
+        padding: 3%;
+    }
+    .autorisation-form input {
+        border: #455C86 solid 2px;
+        border-radius: 6px;
+        font-size: 6pt;
+        width: 130px;
+    }
+    .autorisation-form a {
+        font-size: 6pt;
+    }
+    /*Библиотека*/
+    #SearchBox, #genreSelect {
+        border: #FF87B9 solid 2px;
+        border-radius: 6px;
+        font-size: 6pt;
+        width: 130px;
+    }
+    #genreSelect{
+        margin-left: 15%;
+    }
+    /*ОШИБКА*/
+    .error-header{
+        font-size: 26pt;
+    }
+    .error-descr{
+        font-size: 10pt;
+    }
+
+    /*Читатели*/
+    .readers-profile-icon {
+        width: 30px;
+        height: 30px;
+    }
+    .rank-style {
+        padding-right: 5px;
+        font-size: 10pt;
+    }
+    .follow-reader-button {
+        width: 20px;
+        margin-left: 2px;
+    }
+    .reader-nick-status {
+        font-size: 10px;
+    }
+    .reader-nick-status img {
+        width: 6px;
+    }
+    #indicators-name {
+        font-size: 6pt;
+        width: 40px;
+    }
+    #num_indicators {
+        font-size: 20px;
+    }
+    /*Библиотека*/
+    #no-results p {
+        font-size: 150%;
+    }
+    .add-book-button button {
+        border-radius: 6px;
+        font-size: 12pt;
+    }
+    .new-review-book-img {
+        display: none;
+    }
+    .add-img-book {
+        display: none;
+    }
+    .new-read-book-user{
+        margin-left: -40px;
+    }
+    .new-read-book-user label {
+        font-size: 8pt;
+    }
+    .new-read-book-user input {
+        width: 150px;
+        height: 20px;
+        font-size: 8pt;
+    }
+    .new-read-book-user textarea {
+        width: 200px;
+        height: 150px;
+        font-size: 8pt;
+    }
+    .new-read-book-user select {
+        font-size: 8pt;
+        border-radius: 8px;
+        width: 150px;
+        height: 20px;
+    }
+    #AddNewReading {
+        width: 200px;
+        height: 30px;
+        font-size: 10pt;
+        border-radius: 8px;
+    }
+    /*Карточка книга*/
+    .web-cover-sel-book {
+        display: none;
+    }
+    .mob-cover-sel-book {
+        display: block;
+    }
+    .select-book img {
+        width: 200px;
+        margin-right: 0px;
+    }
+    .sel-book-n {
+        font-size: 20pt;
+        text-align: center;
+    }
+    .sel-book-genre, .sel-book-score, .label-review {
+        font-size: 16pt;
+        text-align: center;
+    }
+    .sel-book-descr, .review-box p, #nav-menu-review-end{
+        font-size: 8pt;
+    }
+    .edit-rev-style img {
+        width: 20px;
+    }
+    .new-review-book-label {
+        display: none;
+    }
+    .new-review-user{
+        margin-left: -40px;
+    }
+    .new-review-user label {
+        font-size: 8pt;
+    }
+    #user-review-box {
+        width: 200px;
+        height: 150px;
+        font-size: 8pt;
+    }
+    .star, #rating-value {
+        font-size: 25px;
+    }
+    #AddNewReview, .select-book button, .new-quote-style, #AddNewQuote {
+        width: 200px;
+        height: 30px;
+        font-size: 8pt;
+        border-radius: 8px;
+    }
+    /*Цитаты*/
+    .new-quote label{
+        font-size: 8pt;
+    }
+    #user-quote-box {
+        width: 200px;
+        height: 150px;
+        font-size: 8pt;
+    }
+    #reading-page-box {
+        height: 25px;
+        font-size: 8pt;
+    }
+    
+    /*Профиль*/
+    .user-profile-icon-head {
+        width: 60px;
+        height: 60px;
+    }
+    .user-profile-head {
+        margin: 10px 1%;
+    }
+    .us-nick-head p {
+        font-size: 20pt;
+    }
+    .us-num-head {
+        font-size: 18pt;
+    }
+    .us-exp-head {
+        font-size: 6pt;
+    }
+    .us-nick-head img {
+        width: 15px;
+    }
+    .us-prof-img {
+        display: none;
+    }
+    #AddNewReading {
+        margin-top: 3%;
+    }
+}
+
+footer.fixed-bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
