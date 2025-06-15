@@ -1,8 +1,10 @@
 <?php
+//Начало сессии
 session_start();
+//Проверка активной сессии
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
-} elseif (isset($_GET['acc'])) {
+} elseif (isset($_GET['acc'])) { //Получение id пользователя для начала сессии
     $acc = $_GET['acc'];
     $_SESSION['acc'] = $acc;
 } else {
@@ -10,6 +12,7 @@ if (isset($_SESSION['acc'])) {
     exit();
 }
 
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -20,6 +23,7 @@ if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
 
+//Проверка роли
 $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
 $roleCheckSql = mysqli_query($db_connect, $roleCheck);
 
@@ -29,6 +33,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
 }
 
 if($RoleId == 2){
+    //Получение информации о пользователе
     $usQuery = "SELECT * FROM user WHERE UserId = $acc";
     $usResult = mysqli_query($db_connect, $usQuery);
     if ($usResult) {
@@ -37,7 +42,6 @@ if($RoleId == 2){
         die("Ошибка выполнения запроса: " . mysqli_error($db_connect));
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -46,6 +50,7 @@ if($RoleId == 2){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="LiteraryHaven - твой проводник в мире книг! Удобная социальная сеть для сообщества читателей.">
     <?php
+    //Вывод названия страницы в зависимости от роли
     if($RoleId == 2){
         echo "<title>Редактирование профиля</title>";
     }
@@ -59,6 +64,7 @@ if($RoleId == 2){
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -106,6 +112,7 @@ if($RoleId == 2){
     <section class='select-book-rewiew' style='margin: 0;'>
     <div id="left" class="section-bookmark" style="background-image: url('Images/Navigation/YellowSection.png'); margin-top: 2%">
         <?php
+        //Вывод заголовка в зависимости от роли
         if($RoleId == 2){
             echo "<h2 class='section-title'>Редактирование профиля</h2>";
         }
@@ -118,6 +125,7 @@ if($RoleId == 2){
         <table style="margin-bottom: 3%;">
             <tr>
                 <?php
+                //Вывод формы при роли "Читатель"
                 if($RoleId == 2){
                     echo "<td style='padding-right: 40px'>";
                     $bookImages = "Images/Profile/" . $userData['UserPhoto'];
@@ -160,62 +168,29 @@ if($RoleId == 2){
     </center>
     </section>
     <script>
-        window.addEventListener("DOMContentLoaded", function() {
-            [].forEach.call( document.querySelectorAll('#user-ph-box'), function(input) {
-                var keyCode;
-                function mask(event) {
-                    event.keyCode && (keyCode = event.keyCode);
-                    var pos = this.selectionStart;
-                    if (pos < 3) event.preventDefault();
-                    var matrix = "+7 (___) ___ __ __",
-                        i = 0,
-                        def = matrix.replace(/\D/g, ""),
-                        val = this.value.replace(/\D/g, ""),
-                        new_value = matrix.replace(/[_\d]/g, function(a) {
-                            return i < val.length ? val.charAt(i++) : a
-                        });
-                    i = new_value.indexOf("_");
-                    if (i != -1) {
-                        i < 5 && (i = 3);
-                        new_value = new_value.slice(0, i)
-                    }
-                    var reg = matrix.substr(0, this.value.length).replace(/_+/g,
-                        function(a) {
-                            return "\\d{1," + a.length + "}"
-                        }).replace(/[+()]/g, "\\$&");
-                    reg = new RegExp("^" + reg + "$");
-                    if (!reg.test(this.value) || this.value.length < 5 || keyCode > 47 && keyCode < 58) {
-                        this.value = new_value;
-                    }
-                    if (event.type == "blur" && this.value.length < 5) {
-                        this.value = "";
-                    }
-                }
-                input.addEventListener("input", mask, false);
-                input.addEventListener("focus", mask, false);
-                input.addEventListener("blur", mask, false);
-                input.addEventListener("keydown", mask, false);
-
-            });
-        });   
+        //Функция предварительного просмотра выбранного изображения
         function previewImage(event) {
+            //Получение изображения из файла
             const file = event.target.files[0];
+            //Чтение файла
             const reader = new FileReader();
             reader.onload = function(e) {
+                //Вывод изображения
                 document.getElementById('us-prof-img').src = e.target.result;
             }
+            //Чтение файла и его конвертация
             reader.readAsDataURL(file);
         }
     
         //Функция для позиционирования подвала
         function adjustFooter() {
             const footer = document.querySelector('footer');
-            // Полная высота документа (включая шапки, контент и футер)
+            //Полная высота документа
             const docHeight = document.body.scrollHeight;
-            // Высота окна браузера
+            //Высота окна браузера
             const windowHeight = window.innerHeight;
 
-            // Если документ меньше окна, фиксируем футер внизу окна
+            //Если документ меньше окна, фиксируем футер внизу окна
             if(docHeight < windowHeight) {
             footer.classList.add('fixed-bottom');
             } else {
