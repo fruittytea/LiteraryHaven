@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
@@ -9,13 +10,14 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Получение кода прочитанной книги
 if (isset($_GET['readId'])) {
     $readId = $_GET['readId'];
 }
 else{
     header("Location: index.php");
 }
-
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -33,6 +35,7 @@ if(!$db_connect){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="LiteraryHaven - твой проводник в мире книг! Удобная социальная сеть для сообщества читателей.">
     <?php
+    //Получение информации о книге
     $q2 = "SELECT BookName, Author FROM book b
             JOIN readbook rb ON rb.Book = b.BookId
             WHERE rb.ReadId = $readId";
@@ -42,6 +45,7 @@ if(!$db_connect){
     {
         $row2 = mysqli_fetch_assoc($sql2);
         $PageTitle = $row2['BookName'] . " - " . $row2['Author'] . " | Новая цитата";
+        //Вывод названия и автора книги в название страницы
         echo "<title>$PageTitle</title>";
     } 
     ?>
@@ -51,6 +55,7 @@ if(!$db_connect){
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фото пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -114,12 +119,12 @@ if(!$db_connect){
         //Функция для позиционирования подвала
         function adjustFooter() {
             const footer = document.querySelector('footer');
-            // Полная высота документа (включая шапки, контент и футер)
+            //Полная высота документа
             const docHeight = document.body.scrollHeight;
-            // Высота окна браузера
+            //Высота окна браузера
             const windowHeight = window.innerHeight;
 
-            // Если документ меньше окна, фиксируем футер внизу окна
+            // Если документ меньше окна, фиксируем подвал внизу окна
             if(docHeight < windowHeight) {
             footer.classList.add('fixed-bottom');
             } else {
