@@ -1,11 +1,13 @@
 <?php
     ob_start();
+    //Подключение к БД
     $host = "localhost";
     $dbname = "sadkovaann";
     $password = "R2UJCEw@Q";
     $user = "sadkovaann";
 
     $db_connect = mysqli_connect($host, $user, $password, $dbname);
+    //Получение данных из формы
     if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['SurnameInput'], $_GET['NameInput'], 
         $_GET['PhoneInput'], $_GET['PasswordInput'], $_GET['EmailInput'], $_GET['NicknameInput'])) {
 
@@ -20,7 +22,7 @@
         if (empty($sn) || empty($n) || empty($ph) || empty($pas) || empty($em) || empty($nick)) {
             echo "<script>alert('Пожалуйста, заполните все поля');</script>";
         } else {
-            // Проверка на уникальность номера телефона
+            //Проверка на уникальность номера телефона
             $check_phone_stmt = $db_connect->prepare("SELECT COUNT(*) FROM user WHERE Phone = ?");
             if ($check_phone_stmt) {
                 $check_phone_stmt->bind_param("s", $ph);
@@ -31,7 +33,7 @@
                 if ($count_phone > 0) {
                     echo "<script>alert('Этот номер телефона уже зарегистрирован!');</script>";
                 } else {
-                    // Проверка на уникальность nickname
+                    //Проверка на уникальность ника
                     $check_nick_stmt = $db_connect->prepare("SELECT COUNT(*) FROM user WHERE Nickname = ?");
                     if ($check_nick_stmt) {
                         $check_nick_stmt->bind_param("s", $nick);
@@ -42,7 +44,7 @@
                         if ($count_nick > 0) {
                             echo "<script>alert('Это имя пользователя уже занято!');</script>";
                         } else {
-                            // Если номер телефона ник уникальны, то регистрация продолжается
+                            //Если номер телефона ник уникальны, то пользователь регистрируется
                             $stmt = $db_connect->prepare("INSERT INTO user (Surname, Name, Fathername, Phone, Password, Email, Scores, Role, Status, Nickname, UserPhoto) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                             $status = 1;
