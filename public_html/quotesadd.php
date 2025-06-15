@@ -1,4 +1,5 @@
 <?php
+//Подключение к бд
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -8,13 +9,14 @@ $db_connect = mysqli_connect($host, $user, $password, $dbname);
 if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
-
+//получение данных из формы
 if (isset($_GET['user-quote-box']) && isset($_GET['reading-page-box'])) {
 $quoteText = $_GET['user-quote-box'];
 $pageNumber = $_GET['reading-page-box'];
 $readId = $_GET['read-id-box'];
 
 if ($quoteText !== '' && $pageNumber > 0) {
+    //Добавление цитаты
     $stmt = $db_connect->prepare("INSERT INTO quotes (ReadBook, Quote, Page) VALUES (?, ?, ?)");
     $stmt->bind_param("isi", $readId, $quoteText, $pageNumber);
     
