@@ -1,4 +1,5 @@
 <?php
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -8,12 +9,13 @@ $db_connect = mysqli_connect($host, $user, $password, $dbname);
 if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
-
+//Получение id пользователя
 if (isset($_POST['user'])) {
     $user = $_POST['user'];
 }
 
 if($user != null){
+    //Обновление статуса блокировки на "Разблокировано"
     $blockUserQ = "UPDATE user SET Scores = 20, Block = false WHERE UserId = $user";
     $sqlBlock = mysqli_query($db_connect, $blockUserQ);
     if ($sqlBlock) {
