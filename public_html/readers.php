@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
@@ -9,6 +10,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -18,7 +20,7 @@ $db_connect = mysqli_connect($host, $user, $password, $dbname);
 if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
-
+//Проверка роли
 $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
 $roleCheckSql = mysqli_query($db_connect, $roleCheck);
 
@@ -40,6 +42,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фото профиля
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -90,6 +93,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
             <h2 class="section-title">Рейтинг читателей</h2>
         </div>
         <?php
+        //Вывод поля поиска
         if($RoleId == 1){
             echo "<input type='text' name='SearchBox' id='SearchBox' placeholder='Поиск' oninput='searchReaderAdmin()'>";
         }
@@ -105,9 +109,10 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
         <table class="readers-table">
         <tbody>
                 <?php
-                $subscribedUsers = []; // Массив для хранения подписанных пользователей
-                $allReaders = []; // Массив для хранения всех читателей
+                $subscribedUsers = []; //Массив для хранения подписанных пользователей
+                $allReaders = []; //Массив для хранения всех читателей
 
+                //Проверка подписок пользователя для изменения кнопок
                 if (isset($_SESSION['acc'])) {
                     $currentUserId = $_SESSION['acc'];
                     $subscriptionQuery = "SELECT Blogger FROM subscription WHERE Subscriber = $currentUserId";
@@ -119,6 +124,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
                 
                 if($RoleId == 2)
                 {
+                    //Запрос на вывод пользователей у читателя
                     $q = "SELECT user.UserPhoto, 
                             user.UserId,  
                             user.Nickname, 
@@ -140,6 +146,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
                 }
                 else if($RoleId=1)
                 {
+                    //Запрос на вывод пользователей у админа
                     $q = "SELECT user.UserPhoto, 
                             user.UserId,  
                             user.Nickname, 
@@ -164,6 +171,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
                 $sql = mysqli_query($db_connect, $q);
                 if ($sql) {
                     $rank = 1;
+                    //Вывод пользователей
                     while ($readersrow = mysqli_fetch_assoc($sql)) {
                         $ReaderIcon = "Images/Profile/".$readersrow['UserPhoto'];
                         $StatusIcon = "Images/Status/".$readersrow['StatusPhoto'];
@@ -212,6 +220,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
                                 echo "<td rowspan=2></td>";
                             }
                         }
+                        //Добавление кнопки блокировки
                         else if ($RoleId == 1){
                             echo "<td rowspan=2>
                                 <img src='Images/Navigation/" . ($isBlocked ? 'Unblock.png' : 'Block.png') . "' 
@@ -233,6 +242,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
             </tbody>
         </table>
         <?php
+        //Добавление кнопки "Добавить администратора"
         if($RoleId == 1){
             echo "<center>
             <a href='editprofile.php'>
@@ -244,17 +254,18 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
         <script>
             //Сохранение данных о пользователях
             const allReaders = <?php echo json_encode($allReaders); ?>;
-
+            //Функция для поиска
             function searchReader() {
-                const query = document.getElementById('SearchBox').value; // Получаем текст из поля поиска
+                const query = document.getElementById('SearchBox').value; //Получение текста из поля поиска
                 const xhr = new XMLHttpRequest();
+                //Отправка запроса в файл для поиска
                 xhr.open('GET', `search_readers.php?query=${encodeURIComponent(query)}`);
                 xhr.onload = function () {
-                    if (xhr.status === 200) {
+                    if (xhr.status === 200) {//Успешное выполнение запроса
                         const results = JSON.parse(xhr.responseText);
                         const tableBody = document.querySelector('.readers-table tbody');
                         const noResults = document.getElementById('no-results');
-                        tableBody.innerHTML = ''; 
+                        tableBody.innerHTML = ''; //Очищение страницы
 
                         if (results.length === 0) {
                             noResults.style.display = 'block';
@@ -272,6 +283,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
                                 const isCurrentUser  = reader.UserId == <?php echo json_encode($currentUserId); ?>;
 
                                 const row = tableBody.insertRow();
+                                //Добавление данных с учетом поиска
                                 row.innerHTML = `
                                     <td rowspan=2 class='rank-style'>${rank}</td>
                                     <td rowspan=2><img src='${ReaderIcon}' alt='Читатель' class='readers-profile-icon'></td>
@@ -301,15 +313,16 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
 
             //Поиск пользователя администратором
             function searchReaderAdmin() {
-                const query = document.getElementById('SearchBox').value; // Получаем текст из поля поиска
+                const query = document.getElementById('SearchBox').value; //Получение текста из поля поиска
                 const xhr = new XMLHttpRequest();
+                //Отправка запроса
                 xhr.open('GET', `search_readers.php?query=${encodeURIComponent(query)}`);
                 xhr.onload = function () {
-                    if (xhr.status === 200) {
+                    if (xhr.status === 200) {//Успешное выполнение
                         const results = JSON.parse(xhr.responseText);
                         const tableBody = document.querySelector('.readers-table tbody');
                         const noResults = document.getElementById('no-results');
-                        tableBody.innerHTML = ''; 
+                        tableBody.innerHTML = ''; //Очищение страницы
 
                         if (results.length === 0) {
                             noResults.style.display = 'block';
@@ -328,6 +341,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
                                 const isBlocked = reader.Block == 1;
 
                                 const row = tableBody.insertRow();
+                                //Добавление результатов поиска
                                 row.innerHTML = `
                                     <td rowspan=2 class='rank-style'>${rank}</td>
                                     <td rowspan=2><img src='${ReaderIcon}' alt='Читатель' class='readers-profile-icon'></td>
@@ -362,7 +376,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
                 //Окно подтверждения блокировки или разблокировки
                 const confirmationMessage = isBlocked ? "Вы хотите разблокировать пользователя?" : "Вы хотите заблокировать пользователя?";
                 if (!confirm(confirmationMessage)) {
-                    return; // Прерываем выполнение функции, если пользователь выбрал "Нет"
+                    return; //Прерывание выполнения функции при выборе "Нет"
                 }
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', isBlocked ? 'unblockUser.php' : 'blockUser.php');
@@ -392,13 +406,15 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
                 const isSubscribed = button.src.includes('Follow.png');
 
                 const xhr = new XMLHttpRequest();
+                //Отправка запроса в зависимости от действия
                 xhr.open('POST', isSubscribed ? 'unsubscribe.php' : 'subscribe.php');
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
                 xhr.onload = function() {
-                    if (xhr.status === 200) {
+                    if (xhr.status === 200) {//Успешное выполнение
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
+                            //Изменение кнопки
                             button.src = isSubscribed ? 'Images/Navigation/Unfollow.png' : 'Images/Navigation/Follow.png';
                             
                             const fansCountCell = button.closest('tr').nextElementSibling.querySelector('.q-fans p');
@@ -425,12 +441,9 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
         //Функция для позиционирования подвала
         function adjustFooter() {
             const footer = document.querySelector('footer');
-            // Полная высота документа (включая шапки, контент и футер)
             const docHeight = document.body.scrollHeight;
-            // Высота окна браузера
             const windowHeight = window.innerHeight;
 
-            // Если документ меньше окна, фиксируем футер внизу окна
             if(docHeight < windowHeight) {
             footer.classList.add('fixed-bottom');
             } else {
