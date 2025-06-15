@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
@@ -6,11 +7,11 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
-
+//Получение информации об изменении
 if (isset($_GET['edit'])) {
     $edit = $_GET['edit'];
 }
-
+//Функция выдачи наград по различным жанрам
 function checkGenre($genre, $acc) {
     if ($genre == 15) {
         $award = 10;
@@ -19,6 +20,7 @@ function checkGenre($genre, $acc) {
     }
 
     if ($award != 0) {
+        //Подключение к БД
         $host = "localhost";
         $dbname = "sadkovaann";
         $password = "R2UJCEw@Q";
@@ -28,7 +30,7 @@ function checkGenre($genre, $acc) {
         if (!$db_connect) {
             return [false, "Ошибка подключения: " . mysqli_connect_error()];
         }
-
+        //Проверка наличия награды у пользователя
         $checkAward = "SELECT * FROM awardsreceived WHERE Award = $award AND UserId = $acc";
         $stmtCheckAward = mysqli_prepare($db_connect, $checkAward);
         if (!$stmtCheckAward) {
@@ -43,9 +45,10 @@ function checkGenre($genre, $acc) {
             mysqli_close($db_connect);
             return [false, $err];
         }
-
+        
         mysqli_stmt_store_result($stmtCheckAward);
         if (mysqli_stmt_num_rows($stmtCheckAward) == 0) {
+            //Получение информации о прочитанных книгах пользователя определенного жанра
             $checkBooks = "SELECT * FROM readbook rb 
                            JOIN book b ON b.BookId = rb.Book
                            WHERE b.Genre = $genre AND rb.User = $acc";
@@ -66,8 +69,9 @@ function checkGenre($genre, $acc) {
             }
 
             mysqli_stmt_store_result($stmtCheckBooks);
+            //Проверка количества прочитанных книг
             if (mysqli_stmt_num_rows($stmtCheckBooks) >= 5) {
-                // Выдача награды
+                //Выдача награды
                 $rewardq = "INSERT INTO awardsreceived (Award, UserId) VALUES ($award, $acc)";
                 $stmtReward = mysqli_prepare($db_connect, $rewardq);
                 if (!$stmtReward) {
@@ -88,7 +92,7 @@ function checkGenre($genre, $acc) {
                 }
                 mysqli_stmt_close($stmtReward);
 
-                // Обновление баллов пользователя
+                //Обновление баллов пользователя
                 $newScore = "UPDATE user SET Scores = Scores + 
                              (SELECT awards.Scores FROM awards WHERE AwardId = $award) 
                              WHERE UserId = $acc";
@@ -111,34 +115,32 @@ function checkGenre($genre, $acc) {
                 }
                 mysqli_stmt_close($stmtNewScore);
 
-                // Закрытие подготовленных выражений и соединения
                 mysqli_stmt_close($stmtCheckBooks);
                 mysqli_stmt_close($stmtCheckAward);
                 mysqli_close($db_connect);
 
-                return [true, null]; // Награда выдана и баллы обновлены
+                return [true, null];
             } else {
-                // Если меньше 5 прочитанных книг
+                //Если меньше 5 прочитанных книг
                 mysqli_stmt_close($stmtCheckBooks);
                 mysqli_stmt_close($stmtCheckAward);
                 mysqli_close($db_connect);
-                return [true, null]; // Условия не выполнены, но ошибок нет
+                return [true, null];
             }
         } else {
-            // Если награда уже выдана
+            //Если награда уже выдана
             mysqli_stmt_close($stmtCheckAward);
             mysqli_close($db_connect);
-            return [true, null]; // Награда уже выдана
+            return [true, null];
         }
     } else {
-        // Если award == 0
         return [false, "Некорректное значение награды"];
     }
 }
 
-
-//Мудрец
+//Награда Мудрец
 function manyBooks($acc) {
+    //Подключение к БД
     $host = "localhost";
     $dbname = "sadkovaann";
     $password = "R2UJCEw@Q";
@@ -148,9 +150,9 @@ function manyBooks($acc) {
     if (!$db_connect) {
         return [false, "Ошибка подключения: " . mysqli_connect_error()];
     }
-
+    //Код награды
     $award = 9;
-
+    //Проверка наличия награды
     $checkAwardSql = "SELECT * FROM awardsreceived WHERE Award = $award AND UserId = $acc";
     $stmtCheckAward = mysqli_prepare($db_connect, $checkAwardSql);
     if (!$stmtCheckAward) {
@@ -168,6 +170,7 @@ function manyBooks($acc) {
 
     mysqli_stmt_store_result($stmtCheckAward);
     if (mysqli_stmt_num_rows($stmtCheckAward) == 0) {
+        //Проверка прочитанных книг пользователем
         $checkBooksSql = "SELECT * FROM readbook rb WHERE rb.User = $acc";
         $stmtCheckBooks = mysqli_prepare($db_connect, $checkBooksSql);
         if (!$stmtCheckBooks) {
@@ -186,7 +189,9 @@ function manyBooks($acc) {
         }
 
         mysqli_stmt_store_result($stmtCheckBooks);
+        //Проверка количества прочитанных книг пользователем
         if (mysqli_stmt_num_rows($stmtCheckBooks) >= 100) {
+            //Выдача награды
             $rewardInsertSql = "INSERT INTO awardsreceived (Award, UserId) VALUES ($award, $acc)";
             $stmtReward = mysqli_prepare($db_connect, $rewardInsertSql);
             if (!$stmtReward) {
@@ -206,7 +211,7 @@ function manyBooks($acc) {
                 return [false, $err];
             }
             mysqli_stmt_close($stmtReward);
-
+            //Обновление количества баллов пользователя
             $updateScoreSql = "UPDATE user SET Scores = Scores + (SELECT scores FROM awards WHERE AwardId = $award) WHERE UserId = $acc";
             $stmtUpdateScore = mysqli_prepare($db_connect, $updateScoreSql);
             if (!$stmtUpdateScore) {
@@ -232,14 +237,14 @@ function manyBooks($acc) {
             mysqli_close($db_connect);
             return [true, null];
         } else {
-            // Недостаточно прочитанных книг для награды
+            //Недостаточно прочитанных книг для награды
             mysqli_stmt_close($stmtCheckBooks);
             mysqli_stmt_close($stmtCheckAward);
             mysqli_close($db_connect);
             return [true, null];
         }
     } else {
-        // Награда уже выдана
+        //Награда уже выдана
         mysqli_stmt_close($stmtCheckAward);
         mysqli_close($db_connect);
         return [true, null];
@@ -248,6 +253,7 @@ function manyBooks($acc) {
 
 //Награда "Первая книга"
 function firstBook($acc) {
+    //Подключение к БД
     $host = "localhost";
     $dbname = "sadkovaann";
     $password = "R2UJCEw@Q";
@@ -257,7 +263,7 @@ function firstBook($acc) {
     if (!$db_connect) {
         return [false, "Ошибка подключения: " . mysqli_connect_error()];
     }
-
+    //Проверка наличия награды
     $checkAward = "SELECT * FROM awardsreceived WHERE Award = 2 AND UserId = $acc";
     $stmtCheckAward = mysqli_prepare($db_connect, $checkAward);
     if (!$stmtCheckAward) {
@@ -275,6 +281,7 @@ function firstBook($acc) {
 
     mysqli_stmt_store_result($stmtCheckAward);
     if (mysqli_stmt_num_rows($stmtCheckAward) == 0) {
+        //Выдача награды
         $rewardq = "INSERT INTO awardsreceived (Award, UserId) VALUES (2, $acc)";
         $stmtReward = mysqli_prepare($db_connect, $rewardq);
         if (!$stmtReward) {
@@ -292,7 +299,7 @@ function firstBook($acc) {
             return [false, $err];
         }
         mysqli_stmt_close($stmtReward);
-
+        //Обновление баллов пользователя
         $newScore = "UPDATE user SET Scores = Scores + 5 WHERE UserId = $acc";
         $stmtNewScore = mysqli_prepare($db_connect, $newScore);
         if (!$stmtNewScore) {
@@ -315,15 +322,16 @@ function firstBook($acc) {
         mysqli_close($db_connect);
         return [true, null];
     } else {
-        //Если награда уже выдана
+        //Награда была выдана
         mysqli_stmt_close($stmtCheckAward);
         mysqli_close($db_connect);
         return [true, null];
     }
 }
 
-//Обновление баллов
+//Обновление баллов за каждую прочитанную книгу
 function updScores($acc){
+    //Подключение к бд
     $host = "localhost";
     $dbname = "sadkovaann";
     $password = "R2UJCEw@Q";
@@ -333,7 +341,7 @@ function updScores($acc){
     if (!$db_connect) {
         die("Ошибка подключения: " . mysqli_connect_error());
     }
-
+    //Обновление баллов
     $queryUsScores = "UPDATE user
     SET Scores = Scores + 5
     WHERE UserId = $acc;";
@@ -357,6 +365,7 @@ function updScores($acc){
 
 //Обновление статуса
 function updStatus($acc){
+    //Подключение к бд
     $host = "localhost";
     $dbname = "sadkovaann";
     $password = "R2UJCEw@Q";
@@ -366,7 +375,7 @@ function updStatus($acc){
     if (!$db_connect) {
         die("Ошибка подключения: " . mysqli_connect_error());
     }
-
+    //Обновление значения статуса у пользователя
     $queryUserStatus = "UPDATE user
     SET Status = (
         SELECT s.StatusId
@@ -402,6 +411,7 @@ function updStatus($acc){
     }
 }
 
+//Подключение к БД
 $host = "localhost";
 $dbname = "sadkovaann";
 $password = "R2UJCEw@Q";
@@ -412,6 +422,7 @@ if (!$db_connect) {
     die("Ошибка подключения: " . mysqli_connect_error());
 }
 
+//Получение данных о прочитанной книге
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $bookId = $_GET['book-id-review'];
     $userId = $acc;
