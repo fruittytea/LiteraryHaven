@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (!isset($_SESSION['acc'])) {
     echo json_encode(['success' => false, 'message' => 'Не авторизован']);
@@ -35,7 +36,7 @@ function updAward($subscriberId) {
                     if (mysqli_stmt_execute($stmtCheck)) {
                         mysqli_stmt_store_result($stmtCheck); 
                         if (mysqli_stmt_num_rows($stmtCheck) > 0) {
-                            
+                            //Выдача награды
                             $queryAdd = "INSERT INTO awardsreceived (Award, UserId) VALUES (?, ?)";
                             $stmtAdd = mysqli_prepare($db_connect, $queryAdd);
                             if ($stmtAdd) {
@@ -84,7 +85,7 @@ function updAward($subscriberId) {
     
 }
 
-//Получение переменной
+//Получение кода пользователя
 $subscriberId = $_SESSION['acc'];
 
 if (isset($_POST['userId'])) {
@@ -107,7 +108,7 @@ if (!$db_connect) {
     die("Ошибка подключения: " . mysqli_connect_error());
 }
 
-// Проверка, существует ли уже подписка
+//Проверка подписки
 $checkQuery = "SELECT COUNT(*) as count FROM subscription WHERE Subscriber = ? AND Blogger = ?";
 $checkStmt = mysqli_prepare($db_connect, $checkQuery);
 mysqli_stmt_bind_param($checkStmt, 'ii', $subscriberId, $bloggerId);
@@ -120,7 +121,7 @@ if ($row['count'] > 0) {
     exit();
 }
 
-//Вставка новой подписки
+//Добавление новой подписки
 $query = "INSERT INTO subscription (Subscriber, Blogger) VALUES (?, ?)";
 $stmt = mysqli_prepare($db_connect, $query);
 mysqli_stmt_bind_param($stmt, 'ii', $subscriberId, $bloggerId);
