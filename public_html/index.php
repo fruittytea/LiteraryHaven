@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc']; 
@@ -21,6 +22,7 @@ if (isset($_SESSION['acc'])) {
     <link rel="icon" href="Images/Logo/icon.png" type="image/png">
 <script type="text/javascript" src="/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=VN7HGoi4BiWMw7b1Bi7jnARiAvcXNESdmDsnACt2fLXEGuEAYpMMDiA-pf1ZWEbL2WGYt4nQsTGHYkuFaSz8y0Gt2me_TPUsjQS1lW6tw5pY1YV8lX_VfQhzvhnN3JVkKb4BsEOvDXv1nu_GuVoo3XUQyzA-8tmN1Kd_IUP2DcjngmOIV_lsAZZZ775jkwQNyrEGW7guI1B7gy_IMg54eiT5uuOrttS6V0XJAWnHl6g" charset="UTF-8"></script></head>
 <?php
+    //Подключение к БД
     $host="localhost";
     $dbname="sadkovaann";
     $password="R2UJCEw@Q";
@@ -31,6 +33,7 @@ if (isset($_SESSION['acc'])) {
         die("Ошибка подключения" . mysqli_connect_error());
     }
 
+    //Проверка роли на соответствие
     $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
     $roleCheckSql = mysqli_query($db_connect, $roleCheck);
 
@@ -46,6 +49,7 @@ if (isset($_SESSION['acc'])) {
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фотографии профиля
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -95,6 +99,7 @@ if (isset($_SESSION['acc'])) {
         <p>Твой проводник в мире книг!</p>
     </div>
     <?php
+    //Получение 5 книг по предпочтениям пользователя с рейтингом не ниже 4
     $q = "SELECT b.BookId, b.BookName, b.Author, b.BookImage FROM book b 
     WHERE b.Genre IN ( 
         SELECT DISTINCT b2.Genre FROM readbook r 
@@ -107,14 +112,14 @@ if (isset($_SESSION['acc'])) {
     LIMIT 5";
 
     $sql = mysqli_query($db_connect, $q);
-
+    //Раздел "Книги по вашим предпочтениям"
     if ($sql && mysqli_num_rows($sql) > 0) {
         echo '<section class="books-section" id="preferences">';
         echo '<div id="left" class="section-bookmark" style="background-image: url(\'Images/Navigation/YellowSection.png\');">';
         echo '<h2 class="section-title">Книги по вашим предпочтениям</h2>';
         echo '</div>';
         echo '<div class="book-cards">';
-
+        //Массив из изображений-заглушек для книг, у которых нет обложек
         $images = [
             'Images/Books/BlueBook.png',
             'Images/Books/PinkBook.png',
@@ -123,7 +128,7 @@ if (isset($_SESSION['acc'])) {
         
         $imageCount = count($images);
         $index = 0;
-
+        //Вывод книг
         while ($userrow = mysqli_fetch_assoc($sql)) {
             echo "<a href='bookcard.php?id={$userrow['BookId']}'><div class='book-card'>";
             if ($userrow['BookImage']!= null){
@@ -176,7 +181,7 @@ if (isset($_SESSION['acc'])) {
                 ];
                 $imageCount = count($images);
                 $index = 0;
-                //Цикл для вывода полученных книг из запроса
+                //Вывод книг
                 while ($userrow = mysqli_fetch_assoc($sql)) {
                     echo "<a href='bookcard.php?id={$userrow['BookId']}'><div class='book-card'>";
                     if ($userrow['BookImage']!= null){
@@ -210,12 +215,14 @@ if (isset($_SESSION['acc'])) {
         </div>
         <div class="book-cards">
             <?php
+                //Вывод последних 5 добавленных книг
                 $q = "SELECT BookId, BookName, Author, BookImage FROM book 
                 WHERE ModerationPassed = true
                 ORDER BY BookId DESC 
                 LIMIT 5";
                 $sql = mysqli_query($db_connect, $q);
                 if ($sql) {
+                    //Массив из изображений-заглушек для книг, у которых нет обложек
                     $images = [
                         'Images/Books/BlueBook.png',
                         'Images/Books/PinkBook.png',
@@ -224,7 +231,7 @@ if (isset($_SESSION['acc'])) {
                     
                     $imageCount = count($images);
                     $index = 0;
-
+                    //Вывод книг
                     while ($userrow = mysqli_fetch_assoc($sql)) {
                         echo "<a href='bookcard.php?id={$userrow['BookId']}'><div class='book-card'>";
                         if ($userrow['BookImage']!= null){
@@ -258,9 +265,11 @@ if (isset($_SESSION['acc'])) {
         </div>
         <div class="genre-cards">
         <?php
+                //Получение 5 жанров из БД
                 $q = "SELECT GenreId, GenreName, GenreImage FROM genre LIMIT 5";
                 $sql = mysqli_query($db_connect, $q);
                 if ($sql) {
+                    //Вывод жанров
                     while ($userrow = mysqli_fetch_assoc($sql)) {
                         $currentImage = "Images/Genre/" . $userrow['GenreImage'];
                         $genreId = $userrow['GenreId'];
@@ -318,6 +327,7 @@ if (isset($_SESSION['acc'])) {
         </footer>
     </center>
     <script>
+        //Массив с баннерами
         const images = [
             "Images/Banner/banner1.png",
             "Images/Banner/banner2.png"
@@ -326,25 +336,27 @@ if (isset($_SESSION['acc'])) {
         let currentIndex = 0;
         const bannerImage = document.getElementById("bannerImage");
 
+        //Функция изменения изображения баннера
         function changeBannerImage() {
             currentIndex = (currentIndex + 1) % images.length;
             bannerImage.style.opacity = 0;
 
             setTimeout(() => {
+                //Изменение источника изображения на следующее в массиве
                 bannerImage.src = images[currentIndex];
                 bannerImage.style.opacity = 1;
             }, 1000);
         }
-
+        //Интервал для смены изображения - 5 секунд
         setInterval(changeBannerImage, 5000);
-
+        //Функция предварительной загрузки изображений
         const preloadImages = (imageArray) => {
             imageArray.forEach((src) => {
                 const img = new Image();
                 img.src = src;
             });
         };
-
+        //Вызов функции предварительной загрузки с массивом изображений
         preloadImages(images);
     </script>
 </body>
