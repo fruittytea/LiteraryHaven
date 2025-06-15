@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
@@ -9,6 +10,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -18,7 +20,7 @@ $db_connect = mysqli_connect($host, $user, $password, $dbname);
 if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
-
+//Получение переменных
 if (isset($_GET['otherUser'])) {
     $otherUser = $_GET['otherUser'];
 }
@@ -28,10 +30,10 @@ if (isset($_GET['myfan'])) {
 if (isset($_GET['mysub'])) {
     $mysub = $_GET['mysub'];
 }
+//Возвращение на предыдущую страницу
 if(!$otherUser && $myfan && $mysub){
     echo "<script>window.history.back();</script>";
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -40,6 +42,7 @@ if(!$otherUser && $myfan && $mysub){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="LiteraryHaven - твой проводник в мире книг! Удобная социальная сеть для сообщества читателей.">
     <?php
+    //Изменение наименования страницы
             if($otherUser){
                 if($myfan){
                     echo "<title>Подписчики пользователя</title>";
@@ -62,6 +65,7 @@ if(!$otherUser && $myfan && $mysub){
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фото пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -110,6 +114,7 @@ if(!$otherUser && $myfan && $mysub){
     <section class="books-section" id="preferences">
         <div id="left" class="section-bookmark" style="background-image: url('Images/Navigation/BlueSection.png'); margin-top: 2%">
         <?php
+        //Вывод заголовка
             if($otherUser){
                 if($myfan){
                     echo "<h2 class='section-title'>Подписчики пользователя</h2>";
@@ -131,14 +136,17 @@ if(!$otherUser && $myfan && $mysub){
                 $subscribedUsers = [];
                 if (isset($_SESSION['acc'])) {
                     $currentUserId = $_SESSION['acc'];
+                    //Проверка подписок пользователя
                     $subscriptionQuery = "SELECT Blogger FROM subscription WHERE Subscriber = $currentUserId";
                     $subscriptionResult = mysqli_query($db_connect, $subscriptionQuery);
                     while ($row = mysqli_fetch_assoc($subscriptionResult)) {
                         $subscribedUsers[] = $row['Blogger'];
                     }
                 }
+                //Переход из профиля другого пользователя
                 if($otherUser){
                     if($myfan){
+                        //Вывод подписчиков другого пользователя
                         $q = "SELECT u.UserId, u.UserPhoto, u.Nickname, s.StatusPhoto, s.StatusName, COUNT(rb.Book) AS Books
                                 FROM subscription AS sub
                                 JOIN user AS u ON sub.Subscriber = u.UserId
@@ -194,6 +202,7 @@ if(!$otherUser && $myfan && $mysub){
                             }
                         }
                     }
+                    //Вывод подписок другого пользователя
                     else if ($mysub){
                         $q = "SELECT u.UserId, u.UserPhoto, u.Nickname, s.StatusPhoto, s.StatusName, COUNT(rb.Book) AS Books
                             FROM subscription AS sub
@@ -251,7 +260,9 @@ if(!$otherUser && $myfan && $mysub){
                         echo "<script>window.history.back();</script>";
                     }
                 }
+                //Переход из личного профиля
                 else if($myfan){
+                    //Вывод подписчиков читателя
                     $q = "SELECT u.UserId, u.UserPhoto, u.Nickname, s.StatusPhoto, s.StatusName, COUNT(rb.Book) AS Books
                             FROM subscription AS sub
                             JOIN user AS u ON sub.Subscriber = u.UserId
@@ -304,6 +315,7 @@ if(!$otherUser && $myfan && $mysub){
                         }
                     }
                 }
+                //Вывод подписок читателя
                 else if($mysub){
                     $q = "SELECT u.UserId, u.UserPhoto, u.Nickname, s.StatusPhoto, s.StatusName, COUNT(rb.Book) AS Books
                         FROM subscription AS sub
@@ -360,18 +372,22 @@ if(!$otherUser && $myfan && $mysub){
             </tbody>
         </table>
         <script>
+            //Функция подписки
             function SubReader(button) {
+                //Получение данных из элементов
                 const userId = button.getAttribute('data-user-id');
                 const isSubscribed = button.src.includes('Follow.png');
 
                 const xhr = new XMLHttpRequest();
+                //Подготовка запроса в необходимый файл
                 xhr.open('POST', isSubscribed ? 'unsubscribe.php' : 'subscribe.php');
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
                 xhr.onload = function() {
-                    if (xhr.status === 200) {
+                    if (xhr.status === 200) { //Успешное выполнение запроса
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
+                            //Изменение кнопки
                             button.src = isSubscribed ? 'Images/Navigation/Unfollow.png' : 'Images/Navigation/Follow.png';
                             
                             const fansCountCell = button.closest('tr').nextElementSibling.querySelector('.q-fans p');
@@ -398,12 +414,9 @@ if(!$otherUser && $myfan && $mysub){
         //Функция для позиционирования подвала
         function adjustFooter() {
             const footer = document.querySelector('footer');
-            // Полная высота документа (включая шапки, контент и футер)
             const docHeight = document.body.scrollHeight;
-            // Высота окна браузера
             const windowHeight = window.innerHeight;
 
-            // Если документ меньше окна, фиксируем футер внизу окна
             if(docHeight < windowHeight) {
             footer.classList.add('fixed-bottom');
             } else {
