@@ -1,5 +1,7 @@
 <?php
+//Начало сессии при авторизации
 session_start();
+//Проверка передачи id аккаунта
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc']; 
 } elseif (isset($_GET['acc'])) {
@@ -20,31 +22,34 @@ if (isset($_SESSION['acc'])) {
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="Images/Logo/icon.png" type="image/png">
     <?php
-        $host="localhost";
-        $dbname="sadkovaann";
-        $password="R2UJCEw@Q";
-        $user="sadkovaann";
+    //Подключение к БД
+    $host="localhost";
+    $dbname="sadkovaann";
+    $password="R2UJCEw@Q";
+    $user="sadkovaann";
 
-        $db_connect = mysqli_connect($host, $user, $password, $dbname);
-        if(!$db_connect){
-            die("Ошибка подключения" . mysqli_connect_error());
+    $db_connect = mysqli_connect($host, $user, $password, $dbname);
+    if(!$db_connect){
+        die("Ошибка подключения" . mysqli_connect_error());
+    }
+
+    //Проверка роли на соответствие
+    $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
+    $roleCheckSql = mysqli_query($db_connect, $roleCheck);
+
+    if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
+        $rowRole = mysqli_fetch_assoc($roleCheckSql);
+        $RoleId = $rowRole['Role'];
+        if($RoleId != 1){
+            header("Location: index.php");
         }
-
-        $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
-        $roleCheckSql = mysqli_query($db_connect, $roleCheck);
-
-        if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
-            $rowRole = mysqli_fetch_assoc($roleCheckSql);
-            $RoleId = $rowRole['Role'];
-            if($RoleId != 1){
-                header("Location: index.php");
-            }
-        }
+    }
     ?>
 <body>
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -94,6 +99,7 @@ if (isset($_SESSION['acc'])) {
             <h2 class="section-title">Все рецензии</h2>
         </div>
         <?php
+        //Получение информации о рецензиях
         $otherUserReview = "SELECT Comment, Mark, UserPhoto, Nickname, UserId, b.BookName, b.Author FROM readbook rb
         JOIN user u ON u.UserId = rb.User 
         JOIN book b ON b.BookId = rb.Book
@@ -104,7 +110,7 @@ if (isset($_SESSION['acc'])) {
         {
             echo "</section>";
             echo "<section class='select-book-rewiew'>";
-
+            //Вывод всех рецензий на страницу
             while ($rewiewSel = mysqli_fetch_assoc($sqlOUReview)) {
                 $UsPh = "Images/Profile/" . $rewiewSel['UserPhoto'];
                 $otherUserNick = "@" . $rewiewSel['Nickname'];
