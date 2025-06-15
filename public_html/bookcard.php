@@ -1,5 +1,7 @@
 <?php
+//Начало сессии
 session_start();
+//Проверка на получение id пользователя
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
 } elseif (isset($_GET['acc'])) {
@@ -9,6 +11,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Проверка на получение кода выбранной книги
 if (isset($_GET['id'])) {
     $SelectBookId = $_GET['id'];
 }
@@ -16,10 +19,12 @@ else{
     header("Location: index.php");
 }
 
+//Проверка на получение кода читателя, со станицы которого был совершен переход к книге
 if (isset($_GET['otherUser'])) {
     $otherUser = $_GET['otherUser'];
 }
 
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -30,6 +35,7 @@ if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
 
+//Проверка роли
 $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
 $roleCheckSql = mysqli_query($db_connect, $roleCheck);
 
@@ -43,6 +49,7 @@ if($RoleId == 1){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['book_check'])) {
             if ($_POST['book_check'] == '1') {
+                //Обновление статуса модерации книги в зависимости от нажатой кнопки
                 $moderQ = "UPDATE book SET ModerationPassed = true WHERE BookId = $SelectBookId";
                 $sqlModer = mysqli_query($db_connect, $moderQ);
                 if ($sqlModer) {
@@ -63,7 +70,6 @@ if($RoleId == 1){
         }
     } 
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -72,6 +78,7 @@ if($RoleId == 1){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="LiteraryHaven - твой проводник в мире книг! Удобная социальная сеть для сообщества читателей.">
     <?php
+    //Получение информации о выбранной книге
     $q2 = "SELECT BookName, Author FROM book
     WHERE BookId = $SelectBookId";
     $sql2 = mysqli_query($db_connect, $q2);
@@ -89,6 +96,7 @@ if($RoleId == 1){
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -136,6 +144,7 @@ if($RoleId == 1){
     
     <section class='select-book'>
         <?php
+        //Вывод информации о выбранной книге
         $q = "SELECT BookName, Author, GenreName, BookDescription, AverageScore, BookImage FROM book
         JOIN genre ON genre.GenreId = book.Genre 
         WHERE BookId = $SelectBookId";
@@ -187,11 +196,13 @@ if($RoleId == 1){
             echo "<tr><td><p class='sel-book-descr'>{$row['BookDescription']}</p></td></tr>";
             echo "</table>";
         } 
+        //Вывод действий при роли "Администратор"
         if ($RoleId == 1){
             $IsModerQ = "SELECT * FROM book
             WHERE BookId = $SelectBookId and ModerationPassed = true";
             $sqlIsModer = mysqli_query($db_connect, $IsModerQ);
 
+            //Вывод кнопок модерации
             if ($sqlIsModer && mysqli_num_rows($sqlIsModer) == 0) 
             {
                 echo "<center>
@@ -201,6 +212,7 @@ if($RoleId == 1){
                 </form>
                 </center>";        
             }
+            //Вывод кнопки редактирования информации о книге
             else
             {
                 echo "<center>
@@ -208,18 +220,22 @@ if($RoleId == 1){
                 </center>";
             }
         }
+        //Вывод при роли "Читатель"
         else if($RoleId == 2){
+            //Проверка выбранной книги на наличие в библиотеке пользователя
             $IsReadingQ = "SELECT Comment, Mark, UserPhoto FROM readbook
             JOIN user ON user.UserId = readbook.User
             WHERE Book = $SelectBookId and User = $acc";
             $sqlIsReading = mysqli_query($db_connect, $IsReadingQ);
 
+            //Вывод кнопки на добавление в прочитанное
             if ($sqlIsReading && mysqli_num_rows($sqlIsReading) == 0) 
             {
                 echo "<center>
                 <button onclick=\"location.href='bookreview.php?BookId=$SelectBookId'\">Добавить в прочитанное</button>
                 </center>";        
             }
+            //Вывод рецензии пользователя
             else
             {
                 $rewiewSel = mysqli_fetch_assoc($sqlIsReading);
