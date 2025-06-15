@@ -1,5 +1,7 @@
 <?php
+//Начало сессии при авторизации
 session_start();
+//Проверка передачи id аккаунта
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc']; 
 } elseif (isset($_GET['acc'])) {
@@ -20,33 +22,35 @@ if (isset($_SESSION['acc'])) {
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="Images/Logo/icon.png" type="image/png">
 <?php
-    $host="localhost";
-    $dbname="sadkovaann";
-    $password="R2UJCEw@Q";
-    $user="sadkovaann";
+//Подключение к бд
+$host="localhost";
+$dbname="sadkovaann";
+$password="R2UJCEw@Q";
+$user="sadkovaann";
 
-    $db_connect = mysqli_connect($host, $user, $password, $dbname);
-    if(!$db_connect){
-        die("Ошибка подключения" . mysqli_connect_error());
+$db_connect = mysqli_connect($host, $user, $password, $dbname);
+if(!$db_connect){
+    die("Ошибка подключения" . mysqli_connect_error());
+}
+
+//Проверка роли пользователя
+$roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
+$roleCheckSql = mysqli_query($db_connect, $roleCheck);
+
+if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
+    $rowRole = mysqli_fetch_assoc($roleCheckSql);
+    $RoleId = $rowRole['Role'];
+    if($RoleId == 2){
+        header("Location: index.php");
     }
-
-
-    $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
-    $roleCheckSql = mysqli_query($db_connect, $roleCheck);
-
-    if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
-        $rowRole = mysqli_fetch_assoc($roleCheckSql);
-        $RoleId = $rowRole['Role'];
-        if($RoleId == 2){
-            header("Location: index.php");
-        }
-    }
+}
 ?>
 <script>
+    //Функция для проверки размера экрана устройства
     function checkScreenWidth() {
-      const minWidth = 1200;
-      const blockedMessage = document.getElementById('blocked-message');
-      const pageContent = document.getElementById('page-content');
+      const minWidth = 1200; //Минимальный размер устройства
+      const blockedMessage = document.getElementById('blocked-message'); //Сообщение о несоответствии размера экрана
+      const pageContent = document.getElementById('page-content'); //Контент на странице
       if(window.innerWidth < minWidth) {
         alert ("Извините, но панель администратора не доступна на мобильных устройствах в связи с ограничением функционала!");
         window.history.back();
@@ -60,6 +64,7 @@ if (isset($_SESSION['acc'])) {
 <header>
         <div class="user-profile">
             <?php
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
