@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
@@ -9,6 +10,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -19,6 +21,7 @@ if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
 
+//Проверка роли на соотвествие
 $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
 $roleCheckSql = mysqli_query($db_connect, $roleCheck);
 
@@ -29,7 +32,6 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
         header("Location: index.php");
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -50,6 +52,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
             else if($RoleId == 2){
                 echo "<a href='profile.php'>";
             }
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -99,10 +102,12 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
         </div>
         <div class="book-cards" id="bookCards" style="margin: 0 15%;">
             <?php
+            //Получение книг, не прошедших модерацию
             $q = "SELECT BookId, BookName, Author, BookImage FROM book b 
             WHERE b.ModerationPassed = false";
             $sql = mysqli_query($db_connect, $q);
             if ($sql) {
+                //Заглушки для обложек
                 $images = [
                     'Images/Books/BlueBook.png',
                     'Images/Books/PinkBook.png',
@@ -112,6 +117,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
                 $imageCount = count($images);
                 $index = 0;
                 if ($sql && mysqli_num_rows($sql) > 0){
+                    //Вывод книг
                         while ($userrow = mysqli_fetch_assoc($sql)) {
                         echo "<a href='bookcard.php?id={$userrow['BookId']}'><div class='book-card'>";
                         if ($userrow['BookImage']!= null){
