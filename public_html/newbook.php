@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
@@ -9,7 +10,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
-
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -19,7 +20,7 @@ $db_connect = mysqli_connect($host, $user, $password, $dbname);
 if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
-
+//Проверка роли
 $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
 $roleCheckSql = mysqli_query($db_connect, $roleCheck);
 
@@ -27,14 +28,16 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
     $rowRole = mysqli_fetch_assoc($roleCheckSql);
     $RoleId = $rowRole['Role'];
 }
-
+//Проверка получения информации о изменении книги
 if (isset($_GET['BookId']) && isset($_GET['edit'])) {
     $BookId = $_GET['BookId'];
     $Edit = $_GET['edit'];
+    //Получение информации об изменяемой книге
     $qEditBook = "SELECT * FROM book WHERE BookId = $BookId";
     $sqlEditBook = mysqli_query($db_connect, $qEditBook);
     if ($sqlEditBook) {
         if (mysqli_num_rows($sqlEditBook) > 0) {
+            //Заполнение информацией о книге
             $bookData = mysqli_fetch_assoc($sqlEditBook);
         } else {
             echo "Книга с ID $BookId не найдена.";
@@ -44,6 +47,7 @@ if (isset($_GET['BookId']) && isset($_GET['edit'])) {
     }
 }
 
+//Получение жанров
 $genreQuery = "SELECT GenreId, GenreName FROM genre";
 $genreResult = mysqli_query($db_connect, $genreQuery);
 ?>
@@ -54,6 +58,7 @@ $genreResult = mysqli_query($db_connect, $genreQuery);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="LiteraryHaven - твой проводник в мире книг! Удобная социальная сеть для сообщества читателей.">
     <?php
+    //Изменение названия страницы в зависимости от предназначения
     if ($Edit){
         echo "<title>Обновление карточки книги</title>";
     }
@@ -67,6 +72,7 @@ $genreResult = mysqli_query($db_connect, $genreQuery);
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -114,6 +120,7 @@ $genreResult = mysqli_query($db_connect, $genreQuery);
     <section class='select-book-rewiew' style='margin: 0;'>
     <div id="left" class="section-bookmark" style="background-image: url('Images/Navigation/BlueSection.png'); margin-top: 2%">
         <?php
+        //Вывод заголовка страницы в зависимости от предназначения
         if ($Edit){
             echo "<h2 class='section-title'>Книга</h2>";
         }
@@ -127,6 +134,7 @@ $genreResult = mysqli_query($db_connect, $genreQuery);
             <tr>
                 <td style='padding-right: 40px'>
                     <?php
+                        //Заглушки обложек
                         $bookImages = ["Images/Books/BlueBook.png", "Images/Books/PinkBook.png", "Images/Books/YellowBook.png"];
                         $randomIndex = array_rand($bookImages);
                         $SelBookImg = $bookImages[$randomIndex];
@@ -188,10 +196,11 @@ $genreResult = mysqli_query($db_connect, $genreQuery);
     <script>
         //Функция добавления изображения
         function previewImage(event) {
+            //Получение изображения из файла
             const file = event.target.files[0];
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('new-review-book-img').src = e.target.result;
+                document.getElementById('new-review-book-img').src = e.target.result; //Вывод изображения
             }
             reader.readAsDataURL(file);
         }
@@ -209,12 +218,12 @@ $genreResult = mysqli_query($db_connect, $genreQuery);
         //Функция для позиционирования подвала
         function adjustFooter() {
             const footer = document.querySelector('footer');
-            // Полная высота документа (включая шапки, контент и футер)
+            //Полная высота документа
             const docHeight = document.body.scrollHeight;
-            // Высота окна браузера
+            //Высота окна браузера
             const windowHeight = window.innerHeight;
 
-            // Если документ меньше окна, фиксируем футер внизу окна
+            //Если документ меньше окна, фиксируем подвал внизу окна
             if(docHeight < windowHeight) {
             footer.classList.add('fixed-bottom');
             } else {
