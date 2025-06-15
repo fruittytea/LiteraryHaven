@@ -1,5 +1,7 @@
 <?php
+//Начало сессии при авторизации
 session_start();
+//Проверка передачи id аккаунта
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
 } elseif (isset($_GET['acc'])) {
@@ -9,6 +11,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -32,6 +35,7 @@ if(!$db_connect){
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -48,6 +52,8 @@ if(!$db_connect){
                         <img src='Images/Profile/NoPhoto.png' alt='Профиль' class='profile-icon'>
                     </a>";
             }
+
+            //Вывод жанров из БД
             $genreQuery = "SELECT GenreId, GenreName FROM genre";
             $genreResult = mysqli_query($db_connect, $genreQuery);
             $genres = [];
@@ -91,6 +97,7 @@ if(!$db_connect){
         </div>
         <div class="genre-cards" style="margin: 0 15%;">
             <?php
+            //Вывод жанров в карточки
             $q = "SELECT GenreId, GenreName, GenreImage FROM genre";
             $sql = mysqli_query($db_connect, $q);
             if ($sql) {
