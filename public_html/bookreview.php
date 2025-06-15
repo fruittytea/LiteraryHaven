@@ -1,5 +1,7 @@
 <?php
+//Начало сессии
 session_start();
+//Проверка на получение id пользователя
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
 } elseif (isset($_GET['acc'])) {
@@ -9,6 +11,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -18,6 +21,7 @@ $db_connect = mysqli_connect($host, $user, $password, $dbname);
 if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
+//Проверка получения кода выбранной книги
 if (isset($_GET['BookId'])) {
     $ReviewBookId = $_GET['BookId'];
 }
@@ -25,8 +29,10 @@ else{
     header("Location: index.php");
 }
 
+//Проверка получения сообщения о редактировании старой рецензии
 if (isset($_GET['edit'])) {
     $edit = $_GET['edit'];
+    //Вывод уже имеющейся информации в поля формы
     $reviewQuery = "SELECT Comment, Mark FROM readbook WHERE Book = $ReviewBookId AND User = $acc";
     $reviewResult = mysqli_query($db_connect, $reviewQuery);
     if ($reviewResult && mysqli_num_rows($reviewResult) > 0) {
@@ -55,6 +61,7 @@ if (isset($_GET['edit'])) {
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -71,6 +78,7 @@ if (isset($_GET['edit'])) {
                         <img src='Images/Profile/NoPhoto.png' alt='Профиль' class='profile-icon'>
                     </a>";
             }
+            //Получение жанров из БД
             $genreQuery = "SELECT GenreId, GenreName FROM genre";
             $genreResult = mysqli_query($db_connect, $genreQuery);
             $genres = [];
@@ -117,6 +125,7 @@ if (isset($_GET['edit'])) {
             <tr>
                 <td style='padding-right: 40px'>
                     <?php
+                    //Вывод информации о книге
                     $NewReviewBookSel = "SELECT BookName, Author, BookImage FROM book WHERE BookId = $ReviewBookId";
                     $sqlNewReview = mysqli_query($db_connect, $NewReviewBookSel);
                     if (!$sqlNewReview) {
@@ -156,6 +165,7 @@ if (isset($_GET['edit'])) {
                                 <span class="star <?php if($existingRating >= 5) echo 'selected'; ?>" data-value="5">&#9733;</span>
                             </div><br>
                             <?php
+                            //Переменная, передающая информацию о том, что отзыв не новый, а изменяется
                             if($edit == 1){
                                 echo "<input type='hidden' name='edit' value='1'>";
                             }
@@ -171,12 +181,15 @@ if (isset($_GET['edit'])) {
     <script>
         //Функция для обновления рейтинга
         document.addEventListener('DOMContentLoaded', function() {
+            //Получение элементов звезд с классом star
             const stars = document.querySelectorAll('.star');
+            //Получение элементов для отображения значения выставленной оценки
             const ratingValue = document.getElementById('rating-value');
             const ratingValue2 = document.getElementById('rating-value-tb');
             let selectedRating = 0; //Хранение рейтинга
 
             stars.forEach(star => {
+                //Обработчик клика на звезду
                 star.addEventListener('click', function() {
                     const rating = this.getAttribute('data-value');
                     selectedRating = rating;
@@ -194,19 +207,23 @@ if (isset($_GET['edit'])) {
                     updateStarColors(selectedRating);
                 });
 
+                //Обработчик наведения мыши на звезду
                 star.addEventListener('mouseover', function() {
                     const rating = this.getAttribute('data-value');
-                    updateStarColors(rating);
+                    updateStarColors(rating); //Изменение цвета
                 });
 
+                //Обработчик, когда мышь больше не наведена на звезду
                 star.addEventListener('mouseout', function() {
-                    updateStarColors(selectedRating);
+                    updateStarColors(selectedRating); //Изменение цвета
                 });
             });
 
+            //Функция для обновления цвета звезд в зависимости от оценки
             function updateStarColors(rating) {
                 stars.forEach((s, index) => {
                     if (index < rating) {
+                        //Присвоение цветов для рейтинга
                         if (rating === '1' || rating === '2') {
                             s.style.color = '#FF0000';
                         } else if (rating === '3') {
@@ -224,7 +241,7 @@ if (isset($_GET['edit'])) {
         //Функция для позиционирования подвала
         function adjustFooter() {
             const footer = document.querySelector('footer');
-            //Полная высота документа (включая шапки, контент и футер)
+            //Полная высота документа
             const docHeight = document.body.scrollHeight;
             //Высота окна браузера
             const windowHeight = window.innerHeight;
