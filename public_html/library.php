@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
@@ -9,6 +10,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -19,6 +21,7 @@ if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
 
+//Проверка роли
 $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
 $roleCheckSql = mysqli_query($db_connect, $roleCheck);
 
@@ -27,6 +30,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
     $RoleId = $rowRole['Role'];
 }
 
+//Получение различной информации в зависимости от страниц перехода
 if (isset($_GET['mylib'])) {
     $mylib = $_GET['mylib'];
 }
@@ -45,7 +49,6 @@ if(isset($_GET['popular'])){
 if(isset($_GET['selectedGenre'])){
     $selectedGenre = (int)$_GET['selectedGenre'];
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -54,6 +57,7 @@ if(isset($_GET['selectedGenre'])){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="LiteraryHaven - твой проводник в мире книг! Удобная социальная сеть для сообщества читателей.">
     <?php
+    //Изменение названия страницы в зависимости от перехода
     if($mylib==1){
         echo "<title>Моя библиотека</title>";
     }
@@ -79,12 +83,14 @@ if(isset($_GET['selectedGenre'])){
     <header>
         <div class="user-profile">
             <?php
+            //Страница для перехода
             if($RoleId == 1){
                 echo "<a href='adminhome.php'>";
             }
             else if($RoleId == 2){
                 echo "<a href='profile.php'>";
             }
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -99,10 +105,12 @@ if(isset($_GET['selectedGenre'])){
                 echo "<img src='Images/Profile/NoPhoto.png' alt='Профиль' class='profile-icon'>
                     </a>";
             }
+            //Получение жанров
             $genreQuery = "SELECT GenreId, GenreName FROM genre";
             $genreResult = mysqli_query($db_connect, $genreQuery);
             $genres = [];
             if ($genreResult) {
+                //Запись жанров в массив
                 while ($row = mysqli_fetch_assoc($genreResult)) {
                     $genres[] = $row;
                 }
@@ -138,6 +146,7 @@ if(isset($_GET['selectedGenre'])){
     <section class="books-section" id="preferences">
         <div id="left" class="section-bookmark" style="background-image: url('Images/Navigation/PinkSection.png'); margin-top: 2%">
             <?php
+            //Изменение заголовка в зависимости от назначения страницы
             if($mylib==1){
                 echo "<h2 class='section-title'>Моя библиотека</h2>";
             }
@@ -159,6 +168,7 @@ if(isset($_GET['selectedGenre'])){
             ?>
         </div>
         <?php
+            //Вывод поиска и фильтра по жанрам
             if(!$preferences && !$newbooks && !$popular){
                 echo '<input type="text" name="SearchBox" id="SearchBox" placeholder="Поиск" oninput="searchBooks()">
                 <select id="genreSelect" onchange="searchBooks()" title="Фильтр по жанрам">
@@ -168,6 +178,7 @@ if(isset($_GET['selectedGenre'])){
                         echo '<option value="' . htmlspecialchars($genre['GenreId']) . '" ' . $selected . '>' . htmlspecialchars($genre['GenreName']) . '</option>';
                     }
                 echo '</select>';
+                //Вывод кнопки модерации для администратора
                 if($RoleId == 1){
                     echo "<a href='moderbook.php'><button class='moder-but'>Книги на модерации</button></a>";
                 }
@@ -175,6 +186,7 @@ if(isset($_GET['selectedGenre'])){
         ?>
         <div class="book-cards" id="bookCards" style="margin: 0 15%;">
             <?php
+                //Вывод книг библиотеки пользователя
                 if($mylib == 1){
                     $q = "SELECT BookId, BookName, Author, BookImage FROM book b 
                     JOIN readbook rb ON rb.Book = b.BookId
@@ -221,6 +233,7 @@ if(isset($_GET['selectedGenre'])){
                         }
                     }
                 }
+                //Вывод книг библиотеки другого пользователя
                 else if($otherUser){
                     $q = "SELECT BookId, BookName, Author, BookImage FROM book b 
                     JOIN readbook rb ON rb.Book = b.BookId
@@ -258,6 +271,7 @@ if(isset($_GET['selectedGenre'])){
                         }
                     }
                 }
+                //Вывод 20 книг по предпочтениям пользователя
                 else if($preferences){
                     $q = "SELECT b.BookId, b.BookName, b.Author, b.BookImage FROM book b 
                             WHERE b.Genre IN ( 
@@ -302,6 +316,7 @@ if(isset($_GET['selectedGenre'])){
                         }
                     }
                 }
+                //Вывод 20 последних добавленных книг
                 else if($newbooks){
                     $q = "SELECT BookId, BookName, Author, BookImage FROM book 
                     WHERE ModerationPassed = true
@@ -339,6 +354,7 @@ if(isset($_GET['selectedGenre'])){
                         }
                     }
                 }
+                //Вывод 20 популярных книг
                 else if($popular){
                     $q = "SELECT BookId, BookName, Author, BookImage FROM book 
                             JOIN readbook ON book.BookId = readbook.Book 
@@ -379,6 +395,7 @@ if(isset($_GET['selectedGenre'])){
                         }
                     }
                 }
+                //Вывод всех книг
                 else{
                     $q = "SELECT BookId, BookName, Author, BookImage FROM book 
                     WHERE ModerationPassed = true
@@ -418,6 +435,7 @@ if(isset($_GET['selectedGenre'])){
             ?>
         </div>
         <?php
+        //Заглушки при отсутствии книг
         if($mylib==1){
             echo "<div id='no-results'>
                 <p>Упс, такой книги еще нет в твоей библиотеке :( </p>
@@ -444,13 +462,18 @@ if(isset($_GET['selectedGenre'])){
         ?>
     </section>
     <script>
+        //Выбор жанра
         const selectGenre = <?php echo isset($selectedGenre) ? json_encode($selectedGenre) : 'null'; ?>;
+        //Функция поиска книги
         function searchBooks() {
+            //Получение текста из поля поиска
             const searchTerm = document.getElementById('SearchBox').value;
+            //Получение выбранного жанра из выпадающего списка
             const selectedGenre = document.getElementById('genreSelect').value;
             const mylib = "<?php echo $mylib; ?>";
             const uslib = "<?php echo $uslib; ?>";
             const otherUser = "<?php echo $otherUser; ?>";
+            //Заглушки для обложек книг
             const images = [
                 'BlueBook.png',
                 'PinkBook.png',
@@ -459,16 +482,18 @@ if(isset($_GET['selectedGenre'])){
             ];
             let index = 0;
             const xhr = new XMLHttpRequest();
+            //Запрос к search.php с параметрами поиска
             xhr.open('GET', 'search.php?term=' + encodeURIComponent(searchTerm) + '&genre=' + encodeURIComponent(selectedGenre) 
                     + '&mylib=' + encodeURIComponent(mylib) + '&otherUser=' + encodeURIComponent(otherUser), true);
+            //Обработчик события при завершении запроса
             xhr.onload = function () {
-                if (xhr.status === 200) {
+                if (xhr.status === 200) { //Если запрос успешен
                     const results = JSON.parse(xhr.responseText);
                     const bookCards = document.getElementById('bookCards');
                     const noResults = document.getElementById('no-results');
                     bookCards.innerHTML = '';
 
-                    if (results.length === 0) {
+                    if (results.length === 0) { //Если нет результатов
                         noResults.style.display = 'block';
                     } else {
                         noResults.style.display = 'none';
@@ -481,6 +506,7 @@ if(isset($_GET['selectedGenre'])){
                                 ? `Images/Books/${book.BookImage}`
                                 : `Images/Books/${images[index]}`; 
 
+                            //Добавляем содержимое
                             bookCard.innerHTML = `
                                 <img src='${bookCover}' alt='Обложка'>
                                 <p id='book-name-p'>${book.BookName}</p>
@@ -496,22 +522,22 @@ if(isset($_GET['selectedGenre'])){
                     }
                 }
             };
-            xhr.send();
+            xhr.send();//Отправляем запрос
         }
+        //Если жанр выбран, то вызываем функцию поиска
         if (selectGenre) {
-            //document.getElementById('genreSelect').value = selectGenre;
             searchBooks();
         }
 
         //Функция для позиционирования подвала
         function adjustFooter() {
             const footer = document.querySelector('footer');
-            // Полная высота документа (включая шапки, контент и футер)
+            //Полная высота документа
             const docHeight = document.body.scrollHeight;
-            // Высота окна браузера
+            //Высота окна браузера
             const windowHeight = window.innerHeight;
 
-            // Если документ меньше окна, фиксируем футер внизу окна
+            //Если документ меньше окна, фиксируем футер внизу окна
             if(docHeight < windowHeight) {
             footer.classList.add('fixed-bottom');
             } else {
