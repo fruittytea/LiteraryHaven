@@ -1,5 +1,7 @@
 <?php
+//Начало сессии
 session_start();
+//Проверка получения id пользователя
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
 } elseif (isset($_GET['acc'])) {
@@ -9,6 +11,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Подключение к бд
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -32,6 +35,7 @@ if(!$db_connect){
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фотографии пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -83,6 +87,7 @@ if(!$db_connect){
         </div>
         <div class="book-cards" id="bookCards" style="margin: 0 15%;">
             <?php
+                //Вывод наград с проверкой на то, была ли она получена пользователем
                 $q = "SELECT 
                         a.AwardName, 
                         a.AwardDescription, 
@@ -111,8 +116,6 @@ if(!$db_connect){
                         $cssClass = $awardReceived == 0 ? 'grayscale' : '';
                         
                         echo "<img src='$AwardIcon' alt='{$awardsrow['AwardName']}' title='{$awardsrow['AwardDescription']}' class='$cssClass'>";
-                        //$AwardIcon = "Images/Awards/".$awardsrow['AwardPath'];
-                        //echo "<img src='$AwardIcon' alt='{$awardsrow['AwardName']}' title='{$awardsrow['AwardDescription']}' >
                         
                         echo "<p id='book-name-p'>{$awardsrow['AwardName']}</p>";
                         echo "</div>";
