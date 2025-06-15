@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
@@ -9,6 +10,7 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -18,6 +20,7 @@ $db_connect = mysqli_connect($host, $user, $password, $dbname);
 if(!$db_connect){
     die("Ошибка подключения" . mysqli_connect_error());
 }
+//Проверка роли
 $roleCheck = "SELECT Role FROM user WHERE UserId = $acc";
 $roleCheckSql = mysqli_query($db_connect, $roleCheck);
 
@@ -29,7 +32,7 @@ if ($roleCheckSql && mysqli_num_rows($roleCheckSql) > 0) {
     }
 }
 
-
+//Проверка на переход в профиль другого пользователя
 if (isset($_GET['usprofile'])) {
     $otherUser = $_GET['usprofile'];
 }
@@ -41,6 +44,7 @@ if (isset($_GET['usprofile'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="LiteraryHaven - твой проводник в мире книг! Удобная социальная сеть для сообщества читателей.">
     <?php
+    //Заголовок для профиля другого читателя
     if($otherUser != null && $otherUser != $acc){
         $qTitle = "SELECT Nickname FROM user WHERE UserId = $otherUser";
         $sqlTitle = mysqli_query($db_connect, $qTitle);
@@ -51,6 +55,7 @@ if (isset($_GET['usprofile'])) {
             echo "<title>$titlePage</title>";
         } 
     }
+    //Заголовок для личного профиля
     else{
         $qTitle = "SELECT Nickname FROM user WHERE UserId = $acc";
         $sqlTitle = mysqli_query($db_connect, $qTitle);
@@ -69,6 +74,7 @@ if (isset($_GET['usprofile'])) {
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фото профиля
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -113,6 +119,7 @@ if (isset($_GET['usprofile'])) {
             </div>
         </div>
         <script>
+            //Функция для отображения некоторого контента в зависимости от типа профиля
             document.addEventListener("DOMContentLoaded", function() {
                 const otherUser  = parseInt("<?php echo $otherUser ; ?>", 10);
                 const autUser  = parseInt("<?php echo $acc; ?>", 10);
@@ -127,11 +134,13 @@ if (isset($_GET['usprofile'])) {
                         bestgenre.style.display = "none";
                     }
                 }
-
+                //Функция скрытия элементов
                 function hideElement() {
+                    //Получение элементов по id
                     var awardlist = document.getElementById("award-list");
                     var bestgenre = document.getElementById("best-genre");
                     console.log('awardlist:', awardlist, 'bestgenre:', bestgenre);
+                    //скрытие элементов
                     if (awardlist) {
                         awardlist.style.display = "none";
                     }
@@ -145,6 +154,7 @@ if (isset($_GET['usprofile'])) {
     
     <section class="user-profile-head">
         <?php
+        //Вывод в аккаунте другого пользователя
         if($otherUser != null && $otherUser != $acc)
         {
             $qUserData = "SELECT 
@@ -170,7 +180,7 @@ if (isset($_GET['usprofile'])) {
                 $subscriptionResult = mysqli_query($db_connect, $checkSubscription);
                 $isSubscribed = mysqli_fetch_assoc($subscriptionResult)['isSubscribed'] > 0;
 
-                // Установка пути к изображению в зависимости от состояния подписки
+                //Путь к изображению в зависимости от подписки
                 $followButtonImage = $isSubscribed ? 'Images/Navigation/Follow.png' : 'Images/Navigation/Unfollow.png';
 
                 echo "<table>";
@@ -190,6 +200,7 @@ if (isset($_GET['usprofile'])) {
                 echo "</table>";
             }
         }
+        //Вывод шапки в личном аккаунте
         else
         {
             $qUserData = "SELECT 
@@ -230,18 +241,22 @@ if (isset($_GET['usprofile'])) {
         ?>
     </section>
     <script>
+        //Функция подписки
         function SubReader(button) {
-                const otherUser = <?php echo $otherUser; ?>;
+                const otherUser = <?php echo $otherUser; ?>; //Получение id пользователя, на которого нужно подписаться/отписаться
+                //Проверка подписки пользователя
                 const isSubscribed = button.src.includes('Follow.png');
 
                 const xhr = new XMLHttpRequest();
+                //Отправление запроса к нужному файлу
                 xhr.open('POST', isSubscribed ? 'unsubscribe.php' : 'subscribe.php');
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
                 xhr.onload = function() {
-                    if (xhr.status === 200) {
+                    if (xhr.status === 200) {//Успешный результат
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
+                            //Вывод нового изображения для кнопки
                             button.src = isSubscribed ? 'Images/Navigation/Unfollow.png' : 'Images/Navigation/Follow.png';
                             
                             const fansCountCell = document.getElementById('count-fan');
@@ -260,10 +275,11 @@ if (isset($_GET['usprofile'])) {
                 console.error('Ошибка сети');
             };
 
-            xhr.send(`otherUser=${otherUser}`);
+            xhr.send(`otherUser=${otherUser}`); //Отправка запроса
         }
     </script>
     <?php
+    //Вывод информации о другом пользователе
     if($otherUser != null && $otherUser != $acc){
         $q = "SELECT b.BookId, b.BookName, b.Author, b.BookImage, u.Nickname FROM book b 
         JOIN readbook r ON r.Book = b.BookId
@@ -318,6 +334,7 @@ if (isset($_GET['usprofile'])) {
             echo "<p id='user-no-book'>Пользователь не добавил в прочитанное ни одной книги!</p>";
         }  
     }
+    //Вывод информации в личном профиле
     else{
         $q = "SELECT b.BookId, b.BookName, b.Author, b.BookImage FROM book b 
         JOIN readbook r ON r.Book = b.BookId
@@ -375,6 +392,7 @@ if (isset($_GET['usprofile'])) {
         </div>
         <div class="genre-cards">
         <?php
+            //Вывод полученных наград
                 $q = "SELECT a.AwardName, a.AwardPath, a.AwardDescription FROM awards a
                     JOIN awardsreceived ar ON ar.Award = a.AwardId
                     WHERE ar.UserId = $acc
@@ -406,6 +424,7 @@ if (isset($_GET['usprofile'])) {
     if($otherUser != null && $otherUser != $acc){
         echo " ";
     }
+    //Вывод книг по предпочтениям
     else{
         $q = "SELECT b.BookId, b.BookName, b.Author, b.BookImage FROM book b 
         WHERE b.Genre IN ( 
@@ -464,6 +483,7 @@ if (isset($_GET['usprofile'])) {
     }
     ?>
     <?php
+    //Вывод любимых жанров
     $q = "SELECT 
                 g.GenreName, 
                 g.GenreImage, 
