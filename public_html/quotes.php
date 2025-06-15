@@ -1,4 +1,5 @@
 <?php
+//Начало сессии
 session_start();
 if (isset($_SESSION['acc'])) {
     $acc = $_SESSION['acc'];
@@ -9,13 +10,14 @@ if (isset($_SESSION['acc'])) {
     header("Location: autorisation.php");
     exit();
 }
+//Получение кода выбранной книги
 if (isset($_GET['bookId'])) {
     $SelectBookId = $_GET['bookId'];
 }
 else{
     header("Location: index.php");
 }
-
+//Подключение к БД
 $host="localhost";
 $dbname="sadkovaann";
 $password="R2UJCEw@Q";
@@ -33,6 +35,7 @@ if(!$db_connect){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="LiteraryHaven - твой проводник в мире книг! Удобная социальная сеть для сообщества читателей.">
     <?php
+    //Получение данных о книге
     $q2 = "SELECT BookName, Author FROM book
     WHERE BookId = $SelectBookId";
     $sql2 = mysqli_query($db_connect, $q2);
@@ -50,6 +53,7 @@ if(!$db_connect){
     <header>
         <div class="user-profile">
             <?php
+            //Вывод фото пользователя
             $q1 = "SELECT UserPhoto FROM user WHERE UserId = $acc";
             $sql1 = mysqli_query($db_connect, $q1);
 
@@ -95,6 +99,7 @@ if(!$db_connect){
         </div>
     </header>
     <?php
+    //Получение кода прочитанной книги
     $readIdQuery = "SELECT ReadId FROM readbook 
                     WHERE Book = $SelectBookId and User = $acc;";
     $sqlreadId = mysqli_query($db_connect, $readIdQuery);
@@ -103,7 +108,7 @@ if(!$db_connect){
         $readId = $row['ReadId'];
     }
 
-
+    //Получение цитат
     $IsReadingQ = "SELECT ReadId, QuotesId, ReadBook, Quote, Page FROM quotes q 
                     JOIN readbook rb ON q.ReadBook = rb.ReadId
                     WHERE rb.Book = $SelectBookId and rb.User = $acc;";
@@ -114,7 +119,7 @@ if(!$db_connect){
         
         $colors = ['#FF87B9', '#FFCC4C', '#99a5e7'];
         $colorIndex = 0;
-
+        //Вывод цитат
         while ($rewiewSel = mysqli_fetch_assoc($sqlIsReading)) {
             $pageQ = $rewiewSel['Page'];
             $quote = $rewiewSel['Quote'];
@@ -128,14 +133,14 @@ if(!$db_connect){
             
             $colorIndex++;
         }
-        
         echo "<div id='no-results' style='display: block; margin-top: 7%;'>";    
     } else {
+        //Заглушка при отсутствии цитат
         echo "<div id='no-results' style='display: block; margin-top: 7%;'>";
         echo "<p>У вас нет избранных цитат из этой книги!</p>
             <p class='mini-label'>Вы можете добавить цитату с помощью кнопки!</p>";
     }
-
+    //Кнопка добавления цитаты
     echo "<a href='newquotes.php?readId=$readId'>
             <button class='new-quote-style'>Добавить цитату</button>
         </a>
@@ -146,12 +151,12 @@ if(!$db_connect){
         //Функция для позиционирования подвала
         function adjustFooter() {
             const footer = document.querySelector('footer');
-            // Полная высота документа (включая шапки, контент и футер)
+            //Полная высота документа
             const docHeight = document.body.scrollHeight;
-            // Высота окна браузера
+            //Высота окна браузера
             const windowHeight = window.innerHeight;
 
-            // Если документ меньше окна, фиксируем футер внизу окна
+            // Если документ меньше окна, фиксируем подвал внизу окна
             if(docHeight < windowHeight) {
             footer.classList.add('fixed-bottom');
             } else {
